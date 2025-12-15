@@ -32,15 +32,15 @@ export const getThemeStyles = (mode, isDark) => {
       hasEncryption: true,
     },
     cute: {
-      // Backgrounds
-      appBg: isDark ? 'bg-[#2a1b26]' : 'bg-rose-50', // Dark Plum / Soft Rose
-      cardBg: isDark ? 'bg-[#3d2434]/80' : 'bg-white/80',
-      headerBg: isDark ? 'bg-[#2a1b26]/80' : 'bg-rose-50/80',
-      modalBg: isDark ? 'bg-[#3d2434]' : 'bg-white',
+      // Backgrounds - UPDATED for softer dark mode
+      appBg: isDark ? 'bg-[#251822]' : 'bg-rose-50', // Deep Plum / Soft Rose
+      cardBg: isDark ? 'bg-[#36202d]/90' : 'bg-white/80',
+      headerBg: isDark ? 'bg-[#251822]/90' : 'bg-rose-50/80',
+      modalBg: isDark ? 'bg-[#36202d]' : 'bg-white', // Matches card background
       
       // Text
-      textPrimary: isDark ? 'text-pink-300' : 'text-rose-500',
-      textSecondary: isDark ? 'text-pink-200' : 'text-rose-600',
+      textPrimary: isDark ? 'text-pink-200' : 'text-rose-500',
+      textSecondary: isDark ? 'text-pink-100' : 'text-rose-600',
       textMuted: isDark ? 'text-pink-800' : 'text-rose-300',
       
       // Borders
@@ -59,7 +59,7 @@ export const getThemeStyles = (mode, isDark) => {
       hasScanline: false,
       hasGlitch: false,
       hasFlicker: false,
-      hasEncryption: false, // Too aggressive for cute
+      hasEncryption: false,
     },
     normal: {
       // Backgrounds
@@ -95,4 +95,3 @@ export const getThemeStyles = (mode, isDark) => {
 
   return styles[mode] || styles.hacker;
 };
-

@@ -36,10 +36,10 @@ const SettingsModal = ({ isOpen, onClose, isDark, settings, updateSetting, reset
         `}>
           
           {/* Header */}
-          <div className={`flex justify-between items-center p-6 border-b ${isDark ? 'border-green-800' : 'border-slate-300'}`}>
+          <div className={`flex justify-between items-center p-4 md:p-6 border-b ${isDark ? 'border-green-800' : 'border-slate-300'}`}>
             <div className="flex items-center gap-2">
               <Settings className="animate-spin-slow" size={20} />
-              <h2 className="text-xl font-bold uppercase tracking-widest">Sys_Config</h2>
+              <h2 className="text-lg md:text-xl font-bold uppercase tracking-widest">Sys_Config</h2>
             </div>
             <button 
               onClick={onClose}
@@ -49,18 +49,23 @@ const SettingsModal = ({ isOpen, onClose, isDark, settings, updateSetting, reset
             </button>
           </div>
 
-          {/* Layout: Sidebar + Content */}
-          <div className="flex flex-grow overflow-hidden">
+          {/* RESPONSIVE LAYOUT: Flex Column on Mobile, Row on Desktop */}
+          <div className="flex flex-col md:flex-row flex-grow overflow-hidden">
             
-            {/* Sidebar Categories */}
-            <div className={`w-32 flex-shrink-0 flex flex-col border-r ${isDark ? 'border-green-800 bg-green-900/5' : 'border-slate-300 bg-slate-50'}`}>
-              <div className="flex-grow">
+            {/* Sidebar / Tabs */}
+            <div className={`
+              w-full md:w-32 flex-shrink-0 flex flex-row md:flex-col 
+              border-b md:border-b-0 md:border-r 
+              ${isDark ? 'border-green-800 bg-green-900/5' : 'border-slate-300 bg-slate-50'}
+            `}>
+              <div className="flex-grow flex md:flex-col overflow-x-auto">
                 {CATEGORIES.map(cat => (
                   <button
                     key={cat.id}
                     onClick={() => setActiveCategory(cat.id)}
                     className={`
-                      w-full p-4 text-xs font-bold uppercase tracking-widest text-left flex flex-col gap-2 transition-all
+                      flex-1 md:flex-none p-3 md:p-4 text-[10px] md:text-xs font-bold uppercase tracking-widest text-center md:text-left flex flex-col gap-2 transition-all items-center md:items-start
+                      whitespace-nowrap
                       ${activeCategory === cat.id 
                         ? (isDark ? 'bg-green-500 text-black' : 'bg-slate-800 text-white') 
                         : (isDark ? 'text-green-600 hover:bg-green-900/20' : 'text-slate-500 hover:bg-slate-200')}
@@ -72,8 +77,10 @@ const SettingsModal = ({ isOpen, onClose, isDark, settings, updateSetting, reset
                 ))}
               </div>
 
-              {/* RESET BUTTON */}
-              <div className={`p-4 border-t ${isDark ? 'border-green-800' : 'border-slate-300'}`}>
+              {/* Reset Button (Hidden on tiny mobile screens in sidebar, could move to bottom) */}
+              <div className={`
+                hidden md:block p-4 border-t ${isDark ? 'border-green-800' : 'border-slate-300'}
+              `}>
                  <button
                    onClick={resetSettings}
                    onMouseEnter={() => setDescription("WARNING: Resets all system configurations to factory defaults.")}
@@ -90,8 +97,8 @@ const SettingsModal = ({ isOpen, onClose, isDark, settings, updateSetting, reset
               </div>
             </div>
 
-            {/* Scrollable Settings Content */}
-            <div className="flex-grow overflow-y-auto p-6 space-y-4">
+            {/* Content Area */}
+            <div className="flex-grow overflow-y-auto p-4 md:p-6 space-y-4">
               
               {activeCategory === 'visual' && (
                 <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
@@ -100,7 +107,7 @@ const SettingsModal = ({ isOpen, onClose, isDark, settings, updateSetting, reset
                     icon={settings.globalDecrypted ? <Unlock size={18}/> : <Lock size={18}/>}
                     isOn={settings.globalDecrypted}
                     onClick={() => updateSetting('globalDecrypted', !settings.globalDecrypted)}
-                    onHover={() => setDescription("Decrypts all data blocks globally. Bypasses individual firewall layers for instant readability.")}
+                    onHover={() => setDescription("Decrypts all data blocks globally.")}
                     isDark={isDark}
                   />
                   
@@ -109,7 +116,7 @@ const SettingsModal = ({ isOpen, onClose, isDark, settings, updateSetting, reset
                     icon={<Power size={18}/>}
                     isOn={settings.animationsOn}
                     onClick={() => updateSetting('animationsOn', !settings.animationsOn)}
-                    onHover={() => setDescription("Enables 'Terminal Handshake' animation when accessing new nodes.")}
+                    onHover={() => setDescription("Enables 'Terminal Handshake' animation.")}
                     isDark={isDark}
                   >
                     <SliderControl 
@@ -170,19 +177,31 @@ const SettingsModal = ({ isOpen, onClose, isDark, settings, updateSetting, reset
                     onUpdateCustomFamily={(val) => updateSetting('customFontFamily', val)}
                     isDark={isDark}
                   />
-                  
-                  <div className={`text-[10px] mt-4 p-3 border rounded opacity-70 ${isDark ? 'border-green-800 text-green-400' : 'border-slate-300 text-slate-500'}`}>
-                    <strong>NOTE:</strong> Ensure custom URLs are valid stylesheet links (e.g. Google Fonts CSS). Invalid URLs may revert to system default.
-                  </div>
                 </div>
               )}
+
+              {/* Mobile Only Reset Button (at bottom of content) */}
+              <div className="md:hidden pt-8 border-t border-dashed border-gray-700/50">
+                 <button
+                   onClick={resetSettings}
+                   className={`
+                     w-full flex items-center justify-center gap-2 text-xs uppercase font-bold py-3 border transition-all
+                     ${isDark 
+                        ? 'border-red-900 text-red-500 hover:bg-red-900/30' 
+                        : 'border-red-300 text-red-600 hover:bg-red-50'}
+                   `}
+                 >
+                   <RotateCcw size={14} />
+                   System Reset
+                 </button>
+              </div>
 
             </div>
           </div>
 
           {/* Status Line */}
           <div className={`
-            p-4 min-h-[4rem] text-xs font-mono border-t border-inherit flex-shrink-0
+            p-3 md:p-4 min-h-[3rem] md:min-h-[4rem] text-[10px] md:text-xs font-mono border-t border-inherit flex-shrink-0
             ${isDark ? 'bg-green-900/10 text-green-400' : 'bg-slate-100 text-slate-600'}
           `}>
              <span className="opacity-50 mr-2">{`>`}</span>

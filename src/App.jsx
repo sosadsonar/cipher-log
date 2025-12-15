@@ -4,6 +4,7 @@ import BlogCard from './components/BlogCard';
 import BlogPost from './components/BlogPost';
 import SettingsModal from './components/SettingsModal';
 import MobileWarning from './components/MobileWarning';
+import InstructionText from './components/InstructionText';
 import { BLOG_POSTS, AVAILABLE_FONTS } from './data';
 import './index.css';
 
@@ -184,7 +185,7 @@ const App = () => {
               <h1 className="text-lg font-bold uppercase tracking-widest leading-none">
                 Zero_Day<span className="animate-pulse">_Log</span>
               </h1>
-              <span className="text-[10px] opacity-60 uppercase">Encrypted Archive V.2.3.1</span>
+              <span className="text-[10px] opacity-60 uppercase">Encrypted Archive V.2.3.3</span>
             </div>
           </div>
 
@@ -247,13 +248,16 @@ const App = () => {
                     Knowledge is <span className="line-through decoration-red-500">Power</span> <br />
                     <span className={`${isDark ? 'text-green-400' : 'text-slate-600'}`}>Control</span>
                  </h2>
-                 <p className="max-w-xl mx-auto text-sm md:text-base opacity-70 leading-relaxed">
-                   Accessing forbidden memory segments. 
-                   {/* Conditionally render the "hover" instruction */}
-                   {!settings.globalDecrypted && (
-                     <span className="text-green-400/80"> Hover over data blocks to inject decryption keys. </span>
-                   )}
-                   Proceed with caution. Content is obfuscated to bypass deep packet inspection.
+                 <p className="max-w-xl mx-auto text-sm md:text-base opacity-70 leading-relaxed transition-all duration-300">
+                   Accessing forbidden memory segments.{" "}
+                   
+                   {/* Modular Instruction Component */}
+                   <InstructionText 
+                     globalDecrypted={settings.globalDecrypted} 
+                     isSettingsOpen={isSettingsOpen} 
+                   />
+                   
+                   {" "}Proceed with caution. Content is obfuscated to bypass deep packet inspection.
                  </p>
               </div>
 

@@ -1,39 +1,48 @@
 # Zero_Day_Log // Encrypted Archive
 
 ![System Status](https://img.shields.io/badge/SYSTEM-ONLINE-22c55e?style=for-the-badge&logo=linux)
-![Encryption](https://img.shields.io/badge/ENCRYPTION-ACTIVE-000000?style=for-the-badge&logo=auth0)
-![Clearance](https://img.shields.io/badge/CLEARANCE-TOP_SECRET-red?style=for-the-badge)
+![Encryption](https://img.shields.io/badge/ENCRYPTION-ADAPTIVE-000000?style=for-the-badge&logo=auth0)
+![Themes](https://img.shields.io/badge/THEMES-HACKER_%7C_CUTE_%7C_NORMAL-f472b6?style=for-the-badge)
 
-> "Accessing forbidden memory segments... Connection Established."
+> "Accessing forbidden memory segments... or maybe just looking for cookies."
 
 ## 📂 Mission Briefing
 
-**Zero_Day_Log** is a React-based immersive blog experience designed to simulate a secure, encrypted terminal interface. It features real-time text decryption effects, CRT scanline aesthetics, and a fully interactive "hacker" UI.
+**Zero_Day_Log** (aka **Kawaii_Terminal**) is a React-based immersive blog experience designed to simulate multiple digital aesthetics. It features a robust **Theme Engine** that transforms the UI from a gritty, encrypted hacker terminal into a soft, particle-filled pastel diary instantly.
 
-**Target URL:** [Deployed System Link](https://sosadsonar.github.io/cipher-log)  
+**Target URL:** [Deployed System Link](https://sosadsonar.github.io/cipher-log)
 
 ---
 
 ## ⚡ Artifact Specs (Features)
 
-- **[FPE] Visual Encryption**: Content appears as complex ciphertext (random alphanumeric & special characters) until hovered.
-- **Terminal Handshake**: Seamless transition animations simulating a secure connection protocol.
-- **Adaptive Camouflage**: Full Light/Dark mode support (Sterile Gray / Neon Black).
-- **System Configuration**:
-  - `Boot Sequence`: Adjustable animation timings.
-  - `Signal Noise`: Configurable CRT flicker frequency.
-  - `Hover Feedback`: Toggleable scrambling effects.
+### 🎨 Multi-Modal Theme Engine
+* **Hacker Mode**: CRT scanlines, "broken lightbulb" text flicker, FPE visual encryption, and glitch effects.
+* **Cute Mode**: "Pillow Pop" hover physics, rounded UI, and animated heart-shaped controls.
+* **Normal Mode**: A clean, minimalist reading experience.
+
+### 🌸 Atmospheric Particle System
+* **Dynamic Physics**: Fully configurable falling particles (Sakura Petals, Stardust, Soft Snow, Fairy Dust).
+* **Customization**: Precision sliders for **Drift Velocity**, **Particle Density**, and **Size Scale**.
+* **Rendering**: Optimized SVG assets with theme-aware coloring.
+
+### ⚙️ Advanced Configuration
+* **Visual FX**: Toggle global decryption, boot sequences, and signal noise.
+* **Typography Engine**: Dynamic injection of Google Fonts (Space Mono, Quicksand, Inter, Fira Code, etc.).
+* **System Diagnostics**: Real-time detection of User Node, OS, and IP address.
+* **Mobile Intelligence**: Responsive "Hardware Mismatch" warnings for handheld devices.
 
 ---
 
 ## 🛠️ Tech Stack (The Armory)
 
-| Component | Protocol | Description |
-| :--- | :--- | :--- |
-| **Core** | `React 19` | The neural network of the application. |
-| **Engine** | `Vite` | High-speed build tool and dev server. |
-| **Styling** | `Tailwind CSS v4` | Utility-first styling for rapid UI development. |
-| **Icons** | `Lucide React` | Vector iconography for system indicators. |
+| Component        | Protocol          | Description                                             |
+| :--------------- | :---------------- | :------------------------------------------------------ |
+| **Core**         | `React 19`        | The neural network of the application.                  |
+| **Engine**       | `Vite`            | High-speed build tool and dev server.                   |
+| **Styling**      | `Tailwind CSS v4` | Utility-first styling with native CSS variable support. |
+| **Icons**        | `Lucide React`    | Vector iconography for system indicators.               |
+| **Architecture** | `Custom Hooks`    | Modular logic for Settings, Fonts, and Diagnostics.     |
 
 ---
 
@@ -41,9 +50,9 @@
 
 Initialize the local environment to bypass the firewall.
 
-```
+```bash
 # 1. Clone the repository
-git clone https://github.com/sosadsonar/cipher-log.git
+git clone [https://github.com/sosadsonar/cipher-log.git](https://github.com/sosadsonar/cipher-log.git)
 
 # 2. Infiltrate the directory
 cd cipher-log
@@ -59,7 +68,7 @@ npm run dev
 
 To broadcast this node to the public web (GitHub Pages):
 
-```
+```bash
 # Execute deployment script
 npm run deploy
 ```

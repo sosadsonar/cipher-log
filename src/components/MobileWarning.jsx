@@ -1,9 +1,9 @@
 import React from 'react';
-import { AlertTriangle, X, Cpu } from 'lucide-react';
+import { AlertTriangle, X } from 'lucide-react';
 
 const MobileWarning = ({ onClose, isDark }) => {
   return (
-    <div className="fixed bottom-4 right-4 z-[9999] animate-in slide-in-from-bottom-10 fade-in duration-500 max-w-sm w-full px-4 md:px-0">
+    <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 z-[9999] animate-in slide-in-from-bottom-10 fade-in duration-500">
       <div className={`
         border-2 p-1 shadow-2xl relative
         ${isDark ? 'bg-black border-yellow-600' : 'bg-white border-yellow-500'}

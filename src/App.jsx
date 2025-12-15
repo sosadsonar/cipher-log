@@ -162,7 +162,7 @@ const App = () => {
           isDark={isDark}
           settings={settings}
           updateSetting={updateSetting}
-          resetSettings={resetSettings} // Pass reset function
+          resetSettings={resetSettings}
         />
 
         <div className="fixed inset-0 pointer-events-none opacity-[0.03]"
@@ -248,7 +248,11 @@ const App = () => {
                     <span className={`${isDark ? 'text-green-400' : 'text-slate-600'}`}>Control</span>
                  </h2>
                  <p className="max-w-xl mx-auto text-sm md:text-base opacity-70 leading-relaxed">
-                   Accessing forbidden memory segments. Hover over data blocks to inject decryption keys. 
+                   Accessing forbidden memory segments. 
+                   {/* Conditionally render the "hover" instruction */}
+                   {!settings.globalDecrypted && (
+                     <span className="text-green-400/80"> Hover over data blocks to inject decryption keys. </span>
+                   )}
                    Proceed with caution. Content is obfuscated to bypass deep packet inspection.
                  </p>
               </div>

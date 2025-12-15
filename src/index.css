@@ -20,56 +20,11 @@
   box-shadow: 0 0 10px #22c55e;
 }
 
-/* --- SCROLLBARS --- */
-
-/* Default (Hacker/Normal) - UPDATED to match Green Hacker Theme */
-::-webkit-scrollbar { 
-  width: 8px; 
-}
-::-webkit-scrollbar-track { 
-  background: #050505; 
-  border-left: 1px solid #111;
-}
-::-webkit-scrollbar-thumb { 
-  background: #22c55e; /* Green-500 to match hacker theme */
-  border-radius: 0;
-  border: 1px solid #000;
-}
-::-webkit-scrollbar-thumb:hover { 
-  background: #4ade80; /* Green-400 */
-  box-shadow: 0 0 5px #22c55e;
-}
-
-/* Scoped Cute Theme Scrollbar */
-.theme-cute ::-webkit-scrollbar {
-  width: 10px;
-}
-.theme-cute ::-webkit-scrollbar-track {
-  background: transparent; 
-}
-.theme-cute ::-webkit-scrollbar-thumb {
-  background-color: #f472b6; /* pink-400 */
-  border-radius: 99px;
-  border: 2px solid transparent;
-  background-clip: content-box; 
-}
-.theme-cute ::-webkit-scrollbar-thumb:hover {
-  background-color: #fb7185; /* rose-400 */
-}
-
-/* --- FONT SELECTOR DROPDOWN FIX --- */
-/* Ensure the dropdown container has better contrast/borders in cute mode */
-.theme-cute .font-selector-dropdown {
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px -2px rgba(244, 114, 182, 0.2); /* Pink shadow */
-  border: 2px solid #fbcfe8; /* Pink-200 */
-}
-
 /* --- SLIDER STYLES (DEFAULT / HACKER / NORMAL) --- */
 input[type=range] {
   -webkit-appearance: none;
   width: 100%;
+  /* Fix: Set height to match thumb size for better click/touch targets */
   height: 20px; 
   background: transparent;
   cursor: pointer;
@@ -90,7 +45,7 @@ input[type=range]::-webkit-slider-thumb {
   border-radius: 2px;
   background: currentColor;
   cursor: pointer;
-  margin-top: -6px;
+  margin-top: -6px; /* (4px track - 16px thumb) / 2 */
   border: 2px solid transparent;
   box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
@@ -111,6 +66,8 @@ input[type=range]::-moz-range-thumb {
 }
 
 /* --- SCOPED CUTE THEME SLIDER --- */
+
+/* Fix usability for cute sliders by increasing hit area */
 .theme-cute input[type=range] {
   height: 28px;
 }
@@ -123,10 +80,10 @@ input[type=range]::-moz-range-thumb {
 /* UPDATED HEART THUMB SETTINGS */
 .theme-cute input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 30px;
-  width: 30px;
+  height: 28px;
+  width: 28px;
   margin: 0; 
-  margin-top: -12px;
+  margin-top: -11px; /* (6px track - 28px thumb) / 2 */
   
   border: none;
   border-radius: 0;
@@ -134,9 +91,10 @@ input[type=range]::-moz-range-thumb {
   background-color: currentColor;
   
   /* Heart Mask */
-  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="2 2.5 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.55284 3.00012C7.93598 3.00012 7.23841 3.06514 6.57209 3.29224C2.55494 4.60387 1.26341 8.894 2.39877 12.43L2.40354 12.4448L2.40877 12.4595C3.03435 14.2174 4.04226 15.8127 5.35336 17.1249L5.36091 17.1324L5.36862 17.1398C7.23782 18.9323 9.27254 20.4953 11.4756 21.8515L11.9934 22.1703L12.5147 21.8573C14.7226 20.5315 16.7964 18.9254 18.6432 17.1474L18.649 17.1419L18.6547 17.1362C19.9771 15.8215 20.9851 14.2144 21.6015 12.4549L21.6066 12.4402L21.6113 12.4253C22.7251 8.89703 21.4401 4.60176 17.4507 3.30948C16.7976 3.09221 16.1236 3.00012 15.4648 3.00012C13.9828 3.00011 12.8858 3.62064 12.0004 4.25309C11.1219 3.62545 10.0176 3.00012 8.55284 3.00012Z" fill="black"/></svg>');
-  mask-image: url('data:image/svg+xml;utf8,<svg viewBox="2 2.5 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.55284 3.00012C7.93598 3.00012 7.23841 3.06514 6.57209 3.29224C2.55494 4.60387 1.26341 8.894 2.39877 12.43L2.40354 12.4448L2.40877 12.4595C3.03435 14.2174 4.04226 15.8127 5.35336 17.1249L5.36091 17.1324L5.36862 17.1398C7.23782 18.9323 9.27254 20.4953 11.4756 21.8515L11.9934 22.1703L12.5147 21.8573C14.7226 20.5315 16.7964 18.9254 18.6432 17.1474L18.649 17.1419L18.6547 17.1362C19.9771 15.8215 20.9851 14.2144 21.6015 12.4549L21.6066 12.4402L21.6113 12.4253C22.7251 8.89703 21.4401 4.60176 17.4507 3.30948C16.7976 3.09221 16.1236 3.00012 15.4648 3.00012C13.9828 3.00011 12.8858 3.62064 12.0004 4.25309C11.1219 3.62545 10.0176 3.00012 8.55284 3.00012Z" fill="black"/></svg>');
+  -webkit-mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.55284 3.00012C7.93598 3.00012 7.23841 3.06514 6.57209 3.29224C2.55494 4.60387 1.26341 8.894 2.39877 12.43L2.40354 12.4448L2.40877 12.4595C3.03435 14.2174 4.04226 15.8127 5.35336 17.1249L5.36091 17.1324L5.36862 17.1398C7.23782 18.9323 9.27254 20.4953 11.4756 21.8515L11.9934 22.1703L12.5147 21.8573C14.7226 20.5315 16.7964 18.9254 18.6432 17.1474L18.649 17.1419L18.6547 17.1362C19.9771 15.8215 20.9851 14.2144 21.6015 12.4549L21.6066 12.4402L21.6113 12.4253C22.7251 8.89703 21.4401 4.60176 17.4507 3.30948C16.7976 3.09221 16.1236 3.00012 15.4648 3.00012C13.9828 3.00011 12.8858 3.62064 12.0004 4.25309C11.1219 3.62545 10.0176 3.00012 8.55284 3.00012Z" fill="black"/></svg>');
+  mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.55284 3.00012C7.93598 3.00012 7.23841 3.06514 6.57209 3.29224C2.55494 4.60387 1.26341 8.894 2.39877 12.43L2.40354 12.4448L2.40877 12.4595C3.03435 14.2174 4.04226 15.8127 5.35336 17.1249L5.36091 17.1324L5.36862 17.1398C7.23782 18.9323 9.27254 20.4953 11.4756 21.8515L11.9934 22.1703L12.5147 21.8573C14.7226 20.5315 16.7964 18.9254 18.6432 17.1474L18.649 17.1419L18.6547 17.1362C19.9771 15.8215 20.9851 14.2144 21.6015 12.4549L21.6066 12.4402L21.6113 12.4253C22.7251 8.89703 21.4401 4.60176 17.4507 3.30948C16.7976 3.09221 16.1236 3.00012 15.4648 3.00012C13.9828 3.00011 12.8858 3.62064 12.0004 4.25309C11.1219 3.62545 10.0176 3.00012 8.55284 3.00012Z" fill="black"/></svg>');
   
+  /* Force mask to cover full thumb area */
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;
@@ -159,7 +117,7 @@ input[type=range]::-moz-range-thumb {
   width: 28px;
   border: none;
   background-color: currentColor;
-  mask-image: url('data:image/svg+xml;utf8,<svg viewBox="2 2.5 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.55284 3.00012C7.93598 3.00012 7.23841 3.06514 6.57209 3.29224C2.55494 4.60387 1.26341 8.894 2.39877 12.43L2.40354 12.4448L2.40877 12.4595C3.03435 14.2174 4.04226 15.8127 5.35336 17.1249L5.36091 17.1324L5.36862 17.1398C7.23782 18.9323 9.27254 20.4953 11.4756 21.8515L11.9934 22.1703L12.5147 21.8573C14.7226 20.5315 16.7964 18.9254 18.6432 17.1474L18.649 17.1419L18.6547 17.1362C19.9771 15.8215 20.9851 14.2144 21.6015 12.4549L21.6066 12.4402L21.6113 12.4253C22.7251 8.89703 21.4401 4.60176 17.4507 3.30948C16.7976 3.09221 16.1236 3.00012 15.4648 3.00012C13.9828 3.00011 12.8858 3.62064 12.0004 4.25309C11.1219 3.62545 10.0176 3.00012 8.55284 3.00012Z" fill="black"/></svg>');
+  mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.55284 3.00012C7.93598 3.00012 7.23841 3.06514 6.57209 3.29224C2.55494 4.60387 1.26341 8.894 2.39877 12.43L2.40354 12.4448L2.40877 12.4595C3.03435 14.2174 4.04226 15.8127 5.35336 17.1249L5.36091 17.1324L5.36862 17.1398C7.23782 18.9323 9.27254 20.4953 11.4756 21.8515L11.9934 22.1703L12.5147 21.8573C14.7226 20.5315 16.7964 18.9254 18.6432 17.1474L18.649 17.1419L18.6547 17.1362C19.9771 15.8215 20.9851 14.2144 21.6015 12.4549L21.6066 12.4402L21.6113 12.4253C22.7251 8.89703 21.4401 4.60176 17.4507 3.30948C16.7976 3.09221 16.1236 3.00012 15.4648 3.00012C13.9828 3.00011 12.8858 3.62064 12.0004 4.25309C11.1219 3.62545 10.0176 3.00012 8.55284 3.00012Z" fill="black"/></svg>');
   mask-size: 100% 100%;
 }
 

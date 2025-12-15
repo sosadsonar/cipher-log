@@ -52,7 +52,7 @@ Initialize the local environment to bypass the firewall.
 
 ```bash
 # 1. Clone the repository
-git clone [https://github.com/sosadsonar/cipher-log.git](https://github.com/sosadsonar/cipher-log.git)
+git clone https://github.com/sosadsonar/cipher-log.git
 
 # 2. Infiltrate the directory
 cd cipher-log

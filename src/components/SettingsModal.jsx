@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
-import { Settings, X, Unlock, Lock, Power, Activity, Zap } from 'lucide-react';
+import { Settings, X, Unlock, Lock, Power, Activity, Zap, Type, Monitor, RotateCcw } from 'lucide-react';
 import SettingToggle from './SettingToggle';
 import SliderControl from './SliderControl';
+import FontSelector from './FontSelector';
 
-const SettingsModal = ({ isOpen, onClose, isDark, settings, updateSetting }) => {
+const CATEGORIES = [
+  { id: 'visual', label: 'Visual FX', icon: <Monitor size={14} /> },
+  { id: 'typography', label: 'Typography', icon: <Type size={14} /> },
+];
+
+const SettingsModal = ({ isOpen, onClose, isDark, settings, updateSetting, resetSettings }) => {
+  const [activeCategory, setActiveCategory] = useState('visual');
   const [description, setDescription] = useState("Hover over an option to analyze functionality.");
 
   if (!isOpen) return null;
@@ -18,15 +25,18 @@ const SettingsModal = ({ isOpen, onClose, isDark, settings, updateSetting }) => 
 
       {/* Modal Window */}
       <div className={`
-        relative w-full max-w-md border-2 p-1 shadow-2xl animate-in fade-in zoom-in-95 duration-300
+        relative w-full max-w-lg border-2 p-1 shadow-2xl animate-in fade-in zoom-in-95 duration-300 flex flex-col
         ${isDark ? 'bg-black border-green-500' : 'bg-white border-slate-800'}
-      `}>
+      `} style={{ height: '600px', maxHeight: '90vh' }}>
+        
         {/* Inner Frame */}
         <div className={`
-          h-full p-6 border border-dashed flex flex-col max-h-[90vh] overflow-y-auto
+          flex-grow p-0 border border-dashed flex flex-col overflow-hidden
           ${isDark ? 'border-green-800' : 'border-slate-300'}
         `}>
-          <div className="flex justify-between items-center mb-8 pb-4 border-b border-inherit">
+          
+          {/* Header */}
+          <div className={`flex justify-between items-center p-6 border-b ${isDark ? 'border-green-800' : 'border-slate-300'}`}>
             <div className="flex items-center gap-2">
               <Settings className="animate-spin-slow" size={20} />
               <h2 className="text-xl font-bold uppercase tracking-widest">Sys_Config</h2>
@@ -39,71 +49,140 @@ const SettingsModal = ({ isOpen, onClose, isDark, settings, updateSetting }) => 
             </button>
           </div>
 
-          <div className="space-y-4 flex-grow">
-            <SettingToggle 
-              label="Global Decryption" 
-              icon={settings.globalDecrypted ? <Unlock size={18}/> : <Lock size={18}/>}
-              isOn={settings.globalDecrypted}
-              onClick={() => updateSetting('globalDecrypted', !settings.globalDecrypted)}
-              onHover={() => setDescription("Decrypts all data blocks globally. Bypasses individual firewall layers for instant readability.")}
-              isDark={isDark}
-            />
+          {/* Layout: Sidebar + Content */}
+          <div className="flex flex-grow overflow-hidden">
             
-            <SettingToggle 
-              label="Boot Sequence" 
-              icon={<Power size={18}/>}
-              isOn={settings.animationsOn}
-              onClick={() => updateSetting('animationsOn', !settings.animationsOn)}
-              onHover={() => setDescription("Enables 'Terminal Handshake' animation when accessing new nodes.")}
-              isDark={isDark}
-            >
-              <SliderControl 
-                label="Sequence Duration"
-                value={settings.bootDuration}
-                min={1.0} max={10.0} step={0.5}
-                onChange={(val) => updateSetting('bootDuration', val)}
-                isDark={isDark}
-              />
-            </SettingToggle>
+            {/* Sidebar Categories */}
+            <div className={`w-32 flex-shrink-0 flex flex-col border-r ${isDark ? 'border-green-800 bg-green-900/5' : 'border-slate-300 bg-slate-50'}`}>
+              <div className="flex-grow">
+                {CATEGORIES.map(cat => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`
+                      w-full p-4 text-xs font-bold uppercase tracking-widest text-left flex flex-col gap-2 transition-all
+                      ${activeCategory === cat.id 
+                        ? (isDark ? 'bg-green-500 text-black' : 'bg-slate-800 text-white') 
+                        : (isDark ? 'text-green-600 hover:bg-green-900/20' : 'text-slate-500 hover:bg-slate-200')}
+                    `}
+                  >
+                    {cat.icon}
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
 
-            <SettingToggle 
-              label="Signal Noise" 
-              icon={<Activity size={18}/>}
-              isOn={settings.flickerOn}
-              onClick={() => updateSetting('flickerOn', !settings.flickerOn)}
-              onHover={() => setDescription("Simulates unstable connection with intermittent display flickering (passive effect).")}
-              isDark={isDark}
-            >
-              <SliderControl 
-                label="Flicker Frequency"
-                value={settings.flickerDuration}
-                min={2.0} max={15.0} step={0.5}
-                onChange={(val) => updateSetting('flickerDuration', val)}
-                isDark={isDark}
-              />
-            </SettingToggle>
+              {/* RESET BUTTON */}
+              <div className={`p-4 border-t ${isDark ? 'border-green-800' : 'border-slate-300'}`}>
+                 <button
+                   onClick={resetSettings}
+                   onMouseEnter={() => setDescription("WARNING: Resets all system configurations to factory defaults.")}
+                   className={`
+                     w-full flex flex-col items-center gap-2 text-[10px] uppercase font-bold py-3 border transition-all duration-300
+                     ${isDark 
+                        ? 'border-red-900 text-red-500 hover:bg-red-900/30 hover:border-red-500' 
+                        : 'border-red-300 text-red-600 hover:bg-red-50 hover:border-red-500'}
+                   `}
+                 >
+                   <RotateCcw size={14} />
+                   System Reset
+                 </button>
+              </div>
+            </div>
 
-            <SettingToggle 
-              label="Hover Feedback" 
-              icon={<Zap size={18}/>}
-              isOn={settings.hoverGlitchOn}
-              onClick={() => updateSetting('hoverGlitchOn', !settings.hoverGlitchOn)}
-              onHover={() => setDescription("Controls the intense glitch animation when hovering over data blocks.")}
-              isDark={isDark}
-            >
-              <SliderControl 
-                label="Decryption Time"
-                value={settings.hoverDuration}
-                min={0.1} max={2.0} step={0.1}
-                onChange={(val) => updateSetting('hoverDuration', val)}
-                isDark={isDark}
-              />
-            </SettingToggle>
+            {/* Scrollable Settings Content */}
+            <div className="flex-grow overflow-y-auto p-6 space-y-4">
+              
+              {activeCategory === 'visual' && (
+                <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+                  <SettingToggle 
+                    label="Global Decryption" 
+                    icon={settings.globalDecrypted ? <Unlock size={18}/> : <Lock size={18}/>}
+                    isOn={settings.globalDecrypted}
+                    onClick={() => updateSetting('globalDecrypted', !settings.globalDecrypted)}
+                    onHover={() => setDescription("Decrypts all data blocks globally. Bypasses individual firewall layers for instant readability.")}
+                    isDark={isDark}
+                  />
+                  
+                  <SettingToggle 
+                    label="Boot Sequence" 
+                    icon={<Power size={18}/>}
+                    isOn={settings.animationsOn}
+                    onClick={() => updateSetting('animationsOn', !settings.animationsOn)}
+                    onHover={() => setDescription("Enables 'Terminal Handshake' animation when accessing new nodes.")}
+                    isDark={isDark}
+                  >
+                    <SliderControl 
+                      label="Sequence Duration"
+                      value={settings.bootDuration}
+                      min={1.0} max={10.0} step={0.5}
+                      onChange={(val) => updateSetting('bootDuration', val)}
+                      isDark={isDark}
+                    />
+                  </SettingToggle>
+
+                  <SettingToggle 
+                    label="Signal Noise" 
+                    icon={<Activity size={18}/>}
+                    isOn={settings.flickerOn}
+                    onClick={() => updateSetting('flickerOn', !settings.flickerOn)}
+                    onHover={() => setDescription("Simulates unstable connection with intermittent display flickering (passive effect).")}
+                    isDark={isDark}
+                  >
+                    <SliderControl 
+                      label="Flicker Frequency"
+                      value={settings.flickerDuration}
+                      min={2.0} max={15.0} step={0.5}
+                      onChange={(val) => updateSetting('flickerDuration', val)}
+                      isDark={isDark}
+                    />
+                  </SettingToggle>
+
+                  <SettingToggle 
+                    label="Hover Feedback" 
+                    icon={<Zap size={18}/>}
+                    isOn={settings.hoverGlitchOn}
+                    onClick={() => updateSetting('hoverGlitchOn', !settings.hoverGlitchOn)}
+                    onHover={() => setDescription("Controls the intense glitch animation when hovering over data blocks.")}
+                    isDark={isDark}
+                  >
+                    <SliderControl 
+                      label="Decryption Time"
+                      value={settings.hoverDuration}
+                      min={0.1} max={2.0} step={0.1}
+                      onChange={(val) => updateSetting('hoverDuration', val)}
+                      isDark={isDark}
+                    />
+                  </SettingToggle>
+                </div>
+              )}
+
+              {activeCategory === 'typography' && (
+                <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+                  <FontSelector 
+                    selectedFontName={settings.fontFamily}
+                    onSelectFont={(name) => updateSetting('fontFamily', name)}
+                    customFontOn={settings.customFontOn}
+                    onToggleCustom={() => updateSetting('customFontOn', !settings.customFontOn)}
+                    customFontUrl={settings.customFontUrl}
+                    onUpdateCustomUrl={(val) => updateSetting('customFontUrl', val)}
+                    customFontFamily={settings.customFontFamily}
+                    onUpdateCustomFamily={(val) => updateSetting('customFontFamily', val)}
+                    isDark={isDark}
+                  />
+                  
+                  <div className={`text-[10px] mt-4 p-3 border rounded opacity-70 ${isDark ? 'border-green-800 text-green-400' : 'border-slate-300 text-slate-500'}`}>
+                    <strong>NOTE:</strong> Ensure custom URLs are valid stylesheet links (e.g. Google Fonts CSS). Invalid URLs may revert to system default.
+                  </div>
+                </div>
+              )}
+
+            </div>
           </div>
 
-          {/* Status Line / Description Area */}
+          {/* Status Line */}
           <div className={`
-            mt-8 p-4 min-h-[5rem] text-xs font-mono border-t border-inherit
+            p-4 min-h-[4rem] text-xs font-mono border-t border-inherit flex-shrink-0
             ${isDark ? 'bg-green-900/10 text-green-400' : 'bg-slate-100 text-slate-600'}
           `}>
              <span className="opacity-50 mr-2">{`>`}</span>

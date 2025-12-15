@@ -33,7 +33,7 @@ const InstructionText = ({ globalDecrypted, isSettingsOpen }) => {
   return (
     <span 
       className={`
-        transition-all duration-200 whitespace-pre
+        transition-all duration-200 whitespace-pre-wrap
         ${status === 'selecting' 
           ? 'text-selection-anim' /* Green BG, Black Text */
           : 'text-green-400/80'}

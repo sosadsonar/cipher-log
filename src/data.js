@@ -75,7 +75,7 @@ export const BLOG_POSTS = [
     `
   },
   {
-id: 5,
+    id: 5,
     title: "Buffer Overflow 101",
     summary: "Smashing the stack for fun and profit. Understanding memory management flaws.",
     date: "2023-12-05",
@@ -117,6 +117,21 @@ export const AVAILABLE_FONTS = [
     url: null 
   },
   { 
+    name: 'Space Mono', 
+    family: '"Space Mono", monospace', 
+    url: 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap' 
+  },
+  { 
+    name: 'Quicksand (Cute)', 
+    family: '"Quicksand", sans-serif', 
+    url: 'https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap' 
+  },
+  { 
+    name: 'Inter (Normal)', 
+    family: '"Inter", sans-serif', 
+    url: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap' 
+  },
+  { 
     name: 'JetBrains Mono', 
     family: '"JetBrains Mono", monospace', 
     url: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap' 
@@ -125,11 +140,6 @@ export const AVAILABLE_FONTS = [
     name: 'Fira Code', 
     family: '"Fira Code", monospace', 
     url: 'https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap' 
-  },
-  { 
-    name: 'Space Mono', 
-    family: '"Space Mono", monospace', 
-    url: 'https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap' 
   },
   { 
     name: 'Share Tech Mono', 
@@ -152,3 +162,5 @@ export const AVAILABLE_FONTS = [
     url: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap' 
   }
 ];
+
+

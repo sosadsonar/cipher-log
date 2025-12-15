@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Hash, Wifi, Sun, Moon, Settings, Globe, Monitor } from 'lucide-react';
+import { Hash, Wifi, Sun, Moon, Settings, Globe, Monitor, Heart, FileText } from 'lucide-react';
 import BlogCard from './components/BlogCard';
 import BlogPost from './components/BlogPost';
 import SettingsModal from './components/SettingsModal';
 import MobileWarning from './components/MobileWarning';
 import InstructionText from './components/InstructionText';
 import { BLOG_POSTS, AVAILABLE_FONTS } from './data';
+import { getThemeStyles } from './themes';
 import './index.css';
+import './hacker-effects.css'; // Importing separated hacker effects
 
-// Define defaults outside component to reuse for reset logic
 const DEFAULT_SETTINGS = {
   globalDecrypted: false,
   animationsOn: true,
@@ -20,7 +21,8 @@ const DEFAULT_SETTINGS = {
   fontFamily: 'Space Mono',
   customFontOn: false,
   customFontUrl: '',
-  customFontFamily: ''
+  customFontFamily: '',
+  themeMode: 'hacker' 
 };
 
 const App = () => {
@@ -28,11 +30,7 @@ const App = () => {
   const [isDark, setIsDark] = useState(true);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  
-  // Mobile Detection State
   const [showMobileWarning, setShowMobileWarning] = useState(false);
-
-  // System Diagnostics State
   const [systemInfo, setSystemInfo] = useState({
     node: 'Initializing...',
     os: 'Analyzing...',
@@ -40,20 +38,28 @@ const App = () => {
     secure: false
   });
 
-  // Centralized Settings State (Initialized with Defaults)
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
 
   const updateSetting = (key, value) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
+    setSettings(prev => {
+      const newSettings = { ...prev, [key]: value };
+      if (key === 'themeMode') {
+        if (value === 'cute') newSettings.fontFamily = 'Quicksand (Cute)';
+        else if (value === 'normal') newSettings.fontFamily = 'Inter (Normal)';
+        else if (value === 'hacker') newSettings.fontFamily = 'Space Mono';
+      }
+      return newSettings;
+    });
   };
 
-  // Reset Logic
   const resetSettings = () => {
     setSettings(DEFAULT_SETTINGS);
   };
 
+  // Compute active theme styles
+  const themeStyles = getThemeStyles(settings.themeMode, isDark);
+
   useEffect(() => {
-    // 1. Mouse Parallax
     const handleMouseMove = (e) => {
       setMousePos({
         x: (e.clientX / window.innerWidth) * 20 - 10,
@@ -62,11 +68,9 @@ const App = () => {
     };
     window.addEventListener('mousemove', handleMouseMove);
 
-    // 2. System Diagnostics (Node, OS, IP)
     const runDiagnostics = async () => {
       const hostname = window.location.hostname;
       const isSecure = window.location.protocol === 'https:';
-      
       let osName = "Unknown Shell";
       const ua = navigator.userAgent;
       if (ua.indexOf("Win") !== -1) osName = "Windows NT";
@@ -92,7 +96,6 @@ const App = () => {
     };
     runDiagnostics();
 
-    // 3. Mobile OS Detection
     const checkMobile = () => {
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
       if (/android|ipad|iphone|ipod|windows phone/i.test(userAgent)) {
@@ -104,11 +107,10 @@ const App = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // --- FONT LOADING LOGIC ---
+  // Font Loader
   useEffect(() => {
     const linkId = 'dynamic-font-link';
     let link = document.getElementById(linkId);
-    
     if (!link) {
       link = document.createElement('link');
       link.id = linkId;
@@ -136,13 +138,44 @@ const App = () => {
     return fontData ? fontData.family : 'monospace';
   };
 
+  // Helper to render the Hero Title based on Theme
+  const renderHeroTitle = () => {
+    if (settings.themeMode === 'hacker') {
+      return (
+        <h2 className={`mt-8 text-4xl md:text-6xl font-black uppercase tracking-tighter max-w-4xl mx-auto glitch-hover ${themeStyles.textSecondary}`}>
+          Knowledge is <span className="line-through decoration-red-500">Power</span> <br />
+          <span className={themeStyles.textSecondary}>Control</span>
+        </h2>
+      );
+    } else if (settings.themeMode === 'cute') {
+      return (
+        <h2 className={`mt-8 text-4xl md:text-6xl font-black tracking-tight max-w-4xl mx-auto ${themeStyles.textSecondary}`}>
+          Welcome Friend! <br />
+          <span className={`${themeStyles.textPrimary} opacity-80`}>Stay Cozy</span>
+        </h2>
+      );
+    } else {
+      return (
+        <h2 className={`mt-8 text-4xl md:text-6xl font-bold tracking-tight max-w-4xl mx-auto ${themeStyles.textSecondary}`}>
+          Welcome to the Blog <br />
+          <span className={`${themeStyles.textPrimary} opacity-80`}>Read & Learn</span>
+        </h2>
+      );
+    }
+  };
+
   return (
     <>
       <div 
         className={`
-          min-h-screen relative overflow-x-hidden scanline font-mono selection:bg-red-500 selection:text-white
-          transition-colors duration-700 ease-in-out
-          ${isDark ? 'bg-[#050505] text-green-500' : 'bg-[#f0f2f5] text-slate-800'}
+          min-h-screen relative overflow-x-hidden transition-colors duration-700 ease-in-out
+          ${themeStyles.appBg} 
+          ${themeStyles.textPrimary}
+          /* Apply theme-specific class for CSS scoping */
+          theme-${settings.themeMode}
+          ${settings.themeMode === 'hacker' ? 'scanline font-mono selection:bg-red-500 selection:text-white' : ''}
+          ${settings.themeMode === 'cute' ? 'font-sans selection:bg-pink-300 selection:text-white' : ''}
+          ${settings.themeMode === 'normal' ? 'font-sans selection:bg-blue-300 selection:text-white' : ''}
         `}
         style={{ 
           '--flicker-duration': `${settings.flickerDuration}s`,
@@ -166,26 +199,35 @@ const App = () => {
           resetSettings={resetSettings}
         />
 
-        <div className="fixed inset-0 pointer-events-none opacity-[0.03]"
-             style={{
-               backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
-             }}>
-        </div>
+        {/* Ambient Noise (Hacker Only) */}
+        {settings.themeMode === 'hacker' && (
+          <div className="fixed inset-0 pointer-events-none opacity-[0.03]"
+               style={{
+                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+               }}>
+          </div>
+        )}
 
         <header className={`
           fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between
-          backdrop-blur-md border-b
-          ${isDark ? 'bg-black/70 border-green-900/50' : 'bg-white/70 border-slate-300/50'}
+          backdrop-blur-md border-b transition-colors duration-500
+          ${themeStyles.headerBg} ${themeStyles.borderSecondary}
         `}>
           <div className="flex items-center gap-2 group cursor-default">
-            <div className={`p-2 border ${isDark ? 'border-green-500 bg-green-900/20' : 'border-slate-800 bg-slate-200'}`}>
-               <Hash size={20} className="animate-spin-slow" />
+            <div className={`p-2 border transition-colors duration-300 ${themeStyles.borderPrimary} ${isDark ? 'bg-white/5' : 'bg-black/5'} ${themeStyles.roundedBtn}`}>
+               {settings.themeMode === 'hacker' && <Hash size={20} className="animate-spin-slow" />}
+               {settings.themeMode === 'cute' && <Heart size={20} className="animate-bounce" />}
+               {settings.themeMode === 'normal' && <FileText size={20} />}
             </div>
             <div>
               <h1 className="text-lg font-bold uppercase tracking-widest leading-none">
-                Zero_Day<span className="animate-pulse">_Log</span>
+                Zero_Day<span className={`${settings.themeMode === 'hacker' ? 'animate-pulse' : ''}`}>_Log</span>
               </h1>
-              <span className="text-[10px] opacity-60 uppercase">Encrypted Archive V.2.3.3</span>
+              <span className={`text-[10px] uppercase opacity-60`}>
+                {settings.themeMode === 'hacker' && 'Encrypted Archive V.2.5.2'}
+                {settings.themeMode === 'cute' && 'Kawaii Archive V.2.5.2'}
+                {settings.themeMode === 'normal' && 'Personal Blog V.2.5.2'}
+              </span>
             </div>
           </div>
 
@@ -193,8 +235,8 @@ const App = () => {
             <button 
               onClick={() => setIsDark(!isDark)}
               className={`
-                flex items-center gap-2 text-xs uppercase hover:text-red-500 transition-colors
-                ${isDark ? 'text-green-500' : 'text-slate-800'}
+                flex items-center gap-2 text-xs uppercase hover:opacity-70 transition-all
+                ${themeStyles.textPrimary}
               `}
               title="Toggle Light/Dark Theme"
             >
@@ -205,8 +247,9 @@ const App = () => {
             <button 
               onClick={() => setIsSettingsOpen(true)}
               className={`
-                p-2 border rounded-sm transition-all duration-300
-                ${isDark ? 'border-green-800 hover:bg-green-900/30 text-green-500' : 'border-slate-300 hover:bg-slate-200 text-slate-800'}
+                p-2 border transition-all duration-300
+                ${themeStyles.borderSecondary} hover:${themeStyles.borderPrimary}
+                ${themeStyles.roundedBtn}
               `}
               title="System Configuration"
             >
@@ -220,12 +263,14 @@ const App = () => {
             <>
               <div className="mb-16 text-center space-y-4">
                  
+                 {/* System Info Block */}
                  <div className={`
-                   inline-flex flex-col items-center gap-2 px-6 py-3 border border-dashed rounded text-xs uppercase opacity-80 transition-colors duration-500
-                   ${isDark ? 'border-green-500/50 text-green-500/80 bg-green-900/5' : 'border-slate-400/50 text-slate-600 bg-slate-100'}
+                   inline-flex flex-col items-center gap-2 px-6 py-3 border rounded text-xs uppercase opacity-80 transition-colors duration-500
+                   ${themeStyles.borderSecondary} ${themeStyles.borderDashed}
+                   ${isDark ? 'bg-white/5' : 'bg-black/5'}
                  `}>
                     <div className="flex items-center gap-3 w-full justify-center">
-                       <Wifi size={12} className={systemInfo.secure ? "text-green-500" : "animate-pulse text-red-500"} />
+                       <Wifi size={12} className={systemInfo.secure ? (isDark ? "text-green-500" : "text-green-600") : "animate-pulse text-red-500"} />
                        <span>{systemInfo.secure ? 'Secure Link' : 'Open Link'}</span>
                        <span className="opacity-30">|</span>
                        <span className="font-bold">Node: {systemInfo.node}</span>
@@ -244,20 +289,19 @@ const App = () => {
                     </div>
                  </div>
 
-                 <h2 className={`mt-8 text-4xl md:text-6xl font-black uppercase tracking-tighter max-w-4xl mx-auto glitch-hover`}>
-                    Knowledge is <span className="line-through decoration-red-500">Power</span> <br />
-                    <span className={`${isDark ? 'text-green-400' : 'text-slate-600'}`}>Control</span>
-                 </h2>
+                 {/* RENDER DYNAMIC HERO TITLE */}
+                 {renderHeroTitle()}
+
                  <p className="max-w-xl mx-auto text-sm md:text-base opacity-70 leading-relaxed transition-all duration-300">
-                   Accessing forbidden memory segments.{" "}
-                   
-                   {/* Modular Instruction Component */}
-                   <InstructionText 
-                     globalDecrypted={settings.globalDecrypted} 
-                     isSettingsOpen={isSettingsOpen} 
-                   />
-                   
-                   {" "}Proceed with caution. Content is obfuscated to bypass deep packet inspection.
+                   {settings.themeMode === 'hacker' ? (
+                     <>
+                       Accessing forbidden memory segments.{" "}
+                       <InstructionText globalDecrypted={settings.globalDecrypted} isSettingsOpen={isSettingsOpen} />
+                       {" "}Proceed with caution.
+                     </>
+                   ) : (
+                     "Explore the latest updates and technical deep dives below."
+                   )}
                  </p>
               </div>
 
@@ -272,6 +316,9 @@ const App = () => {
                     flickerOn={settings.flickerOn}
                     hoverGlitchOn={settings.hoverGlitchOn}
                     hoverDuration={settings.hoverDuration}
+                    isSettingsOpen={isSettingsOpen}
+                    themeMode={settings.themeMode}
+                    themeStyles={themeStyles}
                   />
                 ))}
               </div>
@@ -284,13 +331,15 @@ const App = () => {
               globalDecrypted={settings.globalDecrypted}
               animationsOn={settings.animationsOn}
               bootDuration={settings.bootDuration}
+              themeMode={settings.themeMode}
+              themeStyles={themeStyles}
             />
           )}
         </main>
 
         <footer className={`
-          border-t py-8 text-center text-[10px] uppercase tracking-[0.2em]
-          ${isDark ? 'border-green-900 text-green-800' : 'border-slate-300 text-slate-400'}
+          border-t py-8 text-center text-[10px] uppercase tracking-[0.2em] transition-colors
+          ${themeStyles.borderSecondary} ${themeStyles.textMuted}
         `}>
           <div>System Uptime: 99.9%</div>
           <div className="mt-2">No logs preserved</div>

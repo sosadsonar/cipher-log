@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Hash, Wifi, Sun, Moon, Settings, Globe, Monitor, Heart, FileText } from 'lucide-react';
 import BlogCard from './components/BlogCard';
 import BlogPost from './components/BlogPost';
-import SettingsModal from './components/Settings/SettingsModal'; // Updated Import Path
+import SettingsModal from './components/Settings/SettingsModal';
 import MobileWarning from './components/MobileWarning';
 import InstructionText from './components/InstructionText';
-import AmbientNoise from './components/AmbientNoise';
+import BackgroundEffects from './components/BackgroundEffects';
 import { BLOG_POSTS } from './data';
 // Custom Hooks
 import { useSettings } from './hooks/useSettings';
@@ -14,6 +14,7 @@ import { useFontLoader } from './hooks/useFontLoader';
 // CSS
 import './index.css';
 import './hacker-effects.css';
+import './cute-effects.css';
 
 const App = () => {
   const [activePost, setActivePost] = useState(null);
@@ -38,6 +39,21 @@ const App = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Favicon Switcher Logic
+  useEffect(() => {
+    const link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+    link.type = 'image/svg+xml';
+    link.rel = 'icon';
+    
+    const basePath = import.meta.env.BASE_URL; 
+    
+    link.href = settings.themeMode === 'cute' 
+      ? `${basePath}favicon-cute.svg` 
+      : `${basePath}favicon.svg`;
+
+    document.getElementsByTagName('head')[0].appendChild(link);
+  }, [settings.themeMode]);
+
   // Helper to render the Hero Title based on Theme
   const renderHeroTitle = () => {
     if (settings.themeMode === 'hacker') {
@@ -50,8 +66,28 @@ const App = () => {
     } else if (settings.themeMode === 'cute') {
       return (
         <h2 className={`mt-8 text-4xl md:text-6xl font-black tracking-tight max-w-4xl mx-auto ${themeStyles.textSecondary}`}>
-          Welcome Friend! <br />
-          <span className={`${themeStyles.textPrimary} opacity-80`}>Stay Cozy</span>
+          Curiosity is <br />
+          <span className={`${themeStyles.textPrimary} opacity-90 flex items-center justify-center gap-3`}>
+             <span className="relative inline-block opacity-70">
+               power
+               {/* Custom Squiggle SVG Overlay */}
+               <svg 
+                 viewBox="0 0 100 20" 
+                 // Updated to Turquoise/Teal for high contrast
+                 className={`absolute left-0 top-1/2 -translate-y-1/2 w-full h-full pointer-events-none overflow-visible ${isDark ? 'text-teal-300' : 'text-teal-500'}`}
+                 style={{ transform: 'translateY(10%) scale(1.05)' }}
+               >
+                 <path 
+                   d="M0 10 Q 5 0, 10 10 T 20 10 T 30 10 T 40 10 T 50 10 T 60 10 T 70 10 T 80 10 T 90 10 T 100 10" 
+                   fill="none" 
+                   stroke="currentColor" 
+                   strokeWidth="4"
+                   strokeLinecap="round"
+                 />
+               </svg>
+             </span>
+             cute
+          </span>
         </h2>
       );
     } else {
@@ -98,7 +134,8 @@ const App = () => {
           resetSettings={resetSettings}
         />
 
-        <AmbientNoise themeMode={settings.themeMode} />
+        {/* Updated Background Component */}
+        <BackgroundEffects themeMode={settings.themeMode} isDark={isDark} settings={settings} />
 
         <header className={`
           fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between
@@ -113,12 +150,16 @@ const App = () => {
             </div>
             <div>
               <h1 className="text-lg font-bold uppercase tracking-widest leading-none">
-                Zero_Day<span className={`${settings.themeMode === 'hacker' ? 'animate-pulse' : ''}`}>_Log</span>
+                {settings.themeMode === 'cute' ? (
+                  <>Kawaii_<span className="animate-pulse inline-block">Terminal</span></>
+                ) : (
+                  <>Zero_Day_<span className="animate-pulse inline-block">Log</span></>
+                )}
               </h1>
               <span className={`text-[10px] uppercase opacity-60`}>
-                {settings.themeMode === 'hacker' && 'Encrypted Archive V.3.0.0'}
-                {settings.themeMode === 'cute' && 'Kawaii Archive V.3.0.0'}
-                {settings.themeMode === 'normal' && 'Personal Blog V.3.0.0'}
+                {settings.themeMode === 'hacker' && 'Encrypted Archive V.3.2.0'}
+                {settings.themeMode === 'cute' && 'Cuddle Protocol V.3.2.0'}
+                {settings.themeMode === 'normal' && 'Personal Blog V.3.2.0'}
               </span>
             </div>
           </div>
@@ -191,6 +232,8 @@ const App = () => {
                        <InstructionText globalDecrypted={settings.globalDecrypted} isSettingsOpen={isSettingsOpen} />
                        {" "}Proceed with caution.
                      </>
+                   ) : settings.themeMode === 'cute' ? (
+                     "Accessing forbidden cookie jars. Hover over snack blocks to sprinkle magic sugar. Proceed with cuddles."
                    ) : (
                      "Explore the latest updates and technical deep dives below."
                    )}
@@ -233,8 +276,12 @@ const App = () => {
           border-t py-8 text-center text-[10px] uppercase tracking-[0.2em] transition-colors
           ${themeStyles.borderSecondary} ${themeStyles.textMuted}
         `}>
-          <div>System Uptime: 99.9%</div>
-          <div className="mt-2">No logs preserved</div>
+          <div>
+            {settings.themeMode === 'cute' ? 'Cuddle Timer: 100%' : 'System Uptime: 99.9%'}
+          </div>
+          <div className="mt-2">
+            {settings.themeMode === 'cute' ? 'all secrets spilled' : 'No logs preserved'}
+          </div>
         </footer>
       </div>
     </>

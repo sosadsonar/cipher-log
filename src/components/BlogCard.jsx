@@ -87,6 +87,13 @@ const BlogCard = ({ post, onClick, isDark, globalDecrypted, flickerOn, hoverGlit
     return globalDecrypted || isHovered ? <Unlock size={10} /> : <Lock size={10} />;
   };
 
+  // Helper for the ID label
+  const getIdLabel = () => {
+    if (themeMode === 'hacker') return `DATA_BLOCK_${post.id}`;
+    if (themeMode === 'cute') return `Sweet Note #${post.id}`; // Changed Label
+    return `Post #${post.id}`;
+  };
+
   return (
     <div 
       onClick={() => onClick(post)}
@@ -99,6 +106,7 @@ const BlogCard = ({ post, onClick, isDark, globalDecrypted, flickerOn, hoverGlit
         ${isHovered ? `${themeStyles.borderPrimary}` : `${themeStyles.borderSecondary}`}
         ${themeStyles.rounded}
         backdrop-blur-sm shadow-sm hover:shadow-lg
+        ${themeMode === 'cute' ? 'pillow-pop' : ''}
       `}
     >
       {/* Glitch Overlay (Hacker Only) */}
@@ -106,11 +114,12 @@ const BlogCard = ({ post, onClick, isDark, globalDecrypted, flickerOn, hoverGlit
         <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 pointer-events-none bg-repeat ${isDark ? 'bg-[url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjMjJjNTVlIiAvPgo8L3N2Zz4=")]' : 'bg-[url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjMDAwIiAvPgo8L3N2Zz4=")]'}`}></div>
       )}
 
-      <div>
+      {/* WRAPPER for Pillow Pop Text Float Effect (Cute Mode) */}
+      <div className={themeMode === 'cute' ? 'pillow-content' : ''}>
         <div className={`text-xs uppercase tracking-widest mb-2 flex justify-between ${themeStyles.textMuted}`}>
            <span className="flex items-center gap-1">
              {getStatusIcon()}
-             {themeMode === 'hacker' ? `DATA_BLOCK_${post.id}` : `Post #${post.id}`}
+             {getIdLabel()}
            </span>
            <span>{post.date}</span>
         </div>
@@ -128,9 +137,6 @@ const BlogCard = ({ post, onClick, isDark, globalDecrypted, flickerOn, hoverGlit
             
             /* Flicker effect (passive noise) - Works even if decrypted, unless hovered */
             ${themeMode === 'hacker' && flickerOn && !isHovered ? 'flicker' : ''}
-            
-            /* Cute scale effect */
-            ${themeMode === 'cute' && isHovered ? 'scale-105 transition-transform' : ''}
         `}>
           {displayedTitle}
         </h3>
@@ -157,7 +163,6 @@ const BlogCard = ({ post, onClick, isDark, globalDecrypted, flickerOn, hoverGlit
         {getIcon()}
       </div>
 
-      {/* Decorative corners (Hacker Only) */}
       {themeMode === 'hacker' && (
         <>
           <div className={`absolute top-0 right-0 p-1 border-b border-l ${themeStyles.borderPrimary}`}></div>

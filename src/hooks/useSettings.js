@@ -3,6 +3,7 @@ import { getThemeStyles } from '../themes';
 import { AVAILABLE_FONTS } from '../data';
 
 const DEFAULT_SETTINGS = {
+  // Hacker Settings
   globalDecrypted: false,
   animationsOn: true,
   bootDuration: 3.5,
@@ -10,11 +11,20 @@ const DEFAULT_SETTINGS = {
   flickerDuration: 7.0,
   hoverGlitchOn: true,
   hoverDuration: 0.5,
+  
+  // Shared Typography
   fontFamily: 'Space Mono',
   customFontOn: false,
   customFontUrl: '',
   customFontFamily: '',
-  themeMode: 'hacker' 
+  themeMode: 'hacker',
+
+  // Cute Settings
+  cuteEffectsOn: true,
+  cuteEffectSpeed: 1.0, 
+  cuteParticleType: 'petals',
+  cuteParticleDensity: 20, 
+  cuteDustSize: 5
 };
 
 export const useSettings = (isDark) => {

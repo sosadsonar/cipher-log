@@ -1,0 +1,67 @@
+/* --- CUTE THEME EFFECTS --- */
+
+/* 1. The "Pillow Pop" Hover Effect */
+.theme-cute .pillow-pop {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+
+.theme-cute .pillow-pop:hover {
+  /* Container "sinks" slightly by scaling down a tiny bit or moving down */
+  transform: translateY(2px);
+  /* Shadow tightens to look closer to the "ground" */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+/* The text inside floats up */
+.theme-cute .pillow-pop:hover .pillow-content {
+  transform: translateY(-4px);
+  transition: transform 0.3s ease;
+}
+
+/* 2. Background Particles (Petals & Dust) */
+.cute-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  background: currentColor;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: float-particle linear infinite;
+}
+
+/* Petal shape variants */
+.particle.petal {
+  width: 8px;
+  height: 8px;
+  border-radius: 50% 0 50% 50%; /* Leaf/Petal shape */
+  background: #fbcfe8; /* Pink-200 */
+  opacity: 0.6;
+}
+
+@keyframes float-particle {
+  0% {
+    /* Start ABOVE the viewport */
+    transform: translateY(-10vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    /* End BELOW the viewport with some drift to the right */
+    transform: translateY(105vh) translateX(50px) rotate(360deg);
+    opacity: 0;
+  }
+}

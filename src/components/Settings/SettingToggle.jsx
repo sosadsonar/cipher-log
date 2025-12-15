@@ -29,6 +29,7 @@ const SettingToggle = ({ label, icon, isOn, onClick, onHover, isDark, themeStyle
       className={`
         w-full p-3 md:p-4 border rounded-sm transition-all duration-300
         ${containerClass}
+        flex-shrink-0
       `}
     >
       <button

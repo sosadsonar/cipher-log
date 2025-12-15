@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, Type, ChevronDown, Check, Link, Edit3 } from 'lucide-react';
-import { AVAILABLE_FONTS } from '../data';
-import SettingToggle from './SettingToggle';
+import { AVAILABLE_FONTS } from '../../data'; // Updated Path
+import SettingToggle from './SettingToggle'; // Updated Path
 
 const FontSelector = ({ 
   selectedFontName, 

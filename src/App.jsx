@@ -2,63 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { Hash, Wifi, Sun, Moon, Settings, Globe, Monitor, Heart, FileText } from 'lucide-react';
 import BlogCard from './components/BlogCard';
 import BlogPost from './components/BlogPost';
-import SettingsModal from './components/SettingsModal';
+import SettingsModal from './components/Settings/SettingsModal'; // Updated Import Path
 import MobileWarning from './components/MobileWarning';
 import InstructionText from './components/InstructionText';
-import { BLOG_POSTS, AVAILABLE_FONTS } from './data';
-import { getThemeStyles } from './themes';
+import AmbientNoise from './components/AmbientNoise';
+import { BLOG_POSTS } from './data';
+// Custom Hooks
+import { useSettings } from './hooks/useSettings';
+import { useSystemDiagnostics } from './hooks/useSystemDiagnostics';
+import { useFontLoader } from './hooks/useFontLoader';
+// CSS
 import './index.css';
-import './hacker-effects.css'; // Importing separated hacker effects
-
-const DEFAULT_SETTINGS = {
-  globalDecrypted: false,
-  animationsOn: true,
-  bootDuration: 3.5,
-  flickerOn: true,
-  flickerDuration: 7.0,
-  hoverGlitchOn: true,
-  hoverDuration: 0.5,
-  fontFamily: 'Space Mono',
-  customFontOn: false,
-  customFontUrl: '',
-  customFontFamily: '',
-  themeMode: 'hacker' 
-};
+import './hacker-effects.css';
 
 const App = () => {
   const [activePost, setActivePost] = useState(null);
   const [isDark, setIsDark] = useState(true);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [showMobileWarning, setShowMobileWarning] = useState(false);
-  const [systemInfo, setSystemInfo] = useState({
-    node: 'Initializing...',
-    os: 'Analyzing...',
-    ip: 'Tracing...',
-    secure: false
-  });
 
-  const [settings, setSettings] = useState(DEFAULT_SETTINGS);
+  // 1. Initialize Hooks
+  const { settings, updateSetting, resetSettings, themeStyles, activeFontFamily } = useSettings(isDark);
+  const { systemInfo, showMobileWarning, closeMobileWarning } = useSystemDiagnostics();
+  useFontLoader(settings);
 
-  const updateSetting = (key, value) => {
-    setSettings(prev => {
-      const newSettings = { ...prev, [key]: value };
-      if (key === 'themeMode') {
-        if (value === 'cute') newSettings.fontFamily = 'Quicksand (Cute)';
-        else if (value === 'normal') newSettings.fontFamily = 'Inter (Normal)';
-        else if (value === 'hacker') newSettings.fontFamily = 'Space Mono';
-      }
-      return newSettings;
-    });
-  };
-
-  const resetSettings = () => {
-    setSettings(DEFAULT_SETTINGS);
-  };
-
-  // Compute active theme styles
-  const themeStyles = getThemeStyles(settings.themeMode, isDark);
-
+  // Mouse Parallax Logic
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePos({
@@ -67,76 +35,8 @@ const App = () => {
       });
     };
     window.addEventListener('mousemove', handleMouseMove);
-
-    const runDiagnostics = async () => {
-      const hostname = window.location.hostname;
-      const isSecure = window.location.protocol === 'https:';
-      let osName = "Unknown Shell";
-      const ua = navigator.userAgent;
-      if (ua.indexOf("Win") !== -1) osName = "Windows NT";
-      if (ua.indexOf("Mac") !== -1) osName = "MacOS";
-      if (ua.indexOf("Linux") !== -1) osName = "Linux Kernel";
-      if (ua.indexOf("Android") !== -1) osName = "Android OS";
-      if (ua.indexOf("like Mac") !== -1) osName = "iOS";
-
-      setSystemInfo(prev => ({
-        ...prev,
-        node: hostname === 'localhost' || hostname === '127.0.0.1' ? 'Localhost' : hostname,
-        os: osName,
-        secure: isSecure
-      }));
-
-      try {
-        const res = await fetch('https://api.ipify.org?format=json');
-        const data = await res.json();
-        setSystemInfo(prev => ({ ...prev, ip: data.ip }));
-      } catch (e) {
-        setSystemInfo(prev => ({ ...prev, ip: '::1 (Hidden)' }));
-      }
-    };
-    runDiagnostics();
-
-    const checkMobile = () => {
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      if (/android|ipad|iphone|ipod|windows phone/i.test(userAgent)) {
-        setShowMobileWarning(true);
-      }
-    };
-    checkMobile();
-
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
-
-  // Font Loader
-  useEffect(() => {
-    const linkId = 'dynamic-font-link';
-    let link = document.getElementById(linkId);
-    if (!link) {
-      link = document.createElement('link');
-      link.id = linkId;
-      link.rel = 'stylesheet';
-      document.head.appendChild(link);
-    }
-
-    if (settings.customFontOn && settings.customFontUrl) {
-      link.href = settings.customFontUrl;
-    } else {
-      const fontData = AVAILABLE_FONTS.find(f => f.name === settings.fontFamily);
-      if (fontData && fontData.url) {
-        link.href = fontData.url;
-      } else {
-        link.removeAttribute('href');
-      }
-    }
-  }, [settings.fontFamily, settings.customFontOn, settings.customFontUrl]);
-
-  const getActiveFontFamily = () => {
-    if (settings.customFontOn && settings.customFontFamily) {
-      return settings.customFontFamily;
-    }
-    const fontData = AVAILABLE_FONTS.find(f => f.name === settings.fontFamily);
-    return fontData ? fontData.family : 'monospace';
-  };
 
   // Helper to render the Hero Title based on Theme
   const renderHeroTitle = () => {
@@ -171,7 +71,6 @@ const App = () => {
           min-h-screen relative overflow-x-hidden transition-colors duration-700 ease-in-out
           ${themeStyles.appBg} 
           ${themeStyles.textPrimary}
-          /* Apply theme-specific class for CSS scoping */
           theme-${settings.themeMode}
           ${settings.themeMode === 'hacker' ? 'scanline font-mono selection:bg-red-500 selection:text-white' : ''}
           ${settings.themeMode === 'cute' ? 'font-sans selection:bg-pink-300 selection:text-white' : ''}
@@ -179,13 +78,13 @@ const App = () => {
         `}
         style={{ 
           '--flicker-duration': `${settings.flickerDuration}s`,
-          fontFamily: getActiveFontFamily() 
+          fontFamily: activeFontFamily 
         }}
       >
         
         {showMobileWarning && (
           <MobileWarning 
-            onClose={() => setShowMobileWarning(false)} 
+            onClose={closeMobileWarning} 
             isDark={isDark} 
           />
         )}
@@ -199,14 +98,7 @@ const App = () => {
           resetSettings={resetSettings}
         />
 
-        {/* Ambient Noise (Hacker Only) */}
-        {settings.themeMode === 'hacker' && (
-          <div className="fixed inset-0 pointer-events-none opacity-[0.03]"
-               style={{
-                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
-               }}>
-          </div>
-        )}
+        <AmbientNoise themeMode={settings.themeMode} />
 
         <header className={`
           fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between
@@ -224,9 +116,9 @@ const App = () => {
                 Zero_Day<span className={`${settings.themeMode === 'hacker' ? 'animate-pulse' : ''}`}>_Log</span>
               </h1>
               <span className={`text-[10px] uppercase opacity-60`}>
-                {settings.themeMode === 'hacker' && 'Encrypted Archive V.2.5.2'}
-                {settings.themeMode === 'cute' && 'Kawaii Archive V.2.5.2'}
-                {settings.themeMode === 'normal' && 'Personal Blog V.2.5.2'}
+                {settings.themeMode === 'hacker' && 'Encrypted Archive V.3.0.0'}
+                {settings.themeMode === 'cute' && 'Kawaii Archive V.3.0.0'}
+                {settings.themeMode === 'normal' && 'Personal Blog V.3.0.0'}
               </span>
             </div>
           </div>

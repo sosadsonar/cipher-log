@@ -6,13 +6,10 @@
 }
 
 .theme-cute .pillow-pop:hover {
-  /* Container "sinks" slightly by scaling down a tiny bit or moving down */
   transform: translateY(2px);
-  /* Shadow tightens to look closer to the "ground" */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
-/* The text inside floats up */
 .theme-cute .pillow-pop:hover .pillow-content {
   transform: translateY(-4px);
   transition: transform 0.3s ease;
@@ -38,30 +35,43 @@
   animation: float-particle linear infinite;
 }
 
-/* Petal shape variants */
 .particle.petal {
   width: 8px;
   height: 8px;
-  border-radius: 50% 0 50% 50%; /* Leaf/Petal shape */
-  background: #fbcfe8; /* Pink-200 */
+  border-radius: 50% 0 50% 50%;
+  background: #fbcfe8;
   opacity: 0.6;
 }
 
 @keyframes float-particle {
+  0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% { transform: translateY(105vh) translateX(50px) rotate(360deg); opacity: 0; }
+}
+
+/* 3. Confetti Pop & Fall Animation */
+/* Updated for better visibility and physics feel */
+@keyframes confetti-fall {
   0% {
-    /* Start ABOVE the viewport */
-    transform: translateY(-10vh) translateX(0) rotate(0deg);
-    opacity: 0;
+    opacity: 1;
+    transform: translate(0, 0) scale(0) rotate(0deg);
   }
-  10% {
-    opacity: 0.8;
-  }
-  90% {
-    opacity: 0.8;
+  20% {
+    /* Explode Upwards */
+    opacity: 1;
+    transform: translate(var(--vx), var(--vy)) scale(1.2) rotate(var(--rot));
   }
   100% {
-    /* End BELOW the viewport with some drift to the right */
-    transform: translateY(105vh) translateX(50px) rotate(360deg);
+    /* Fall Downwards (Gravity) */
     opacity: 0;
+    transform: translate(calc(var(--vx) * 1.5), 120px) scale(0.8) rotate(calc(var(--rot) * 4));
   }
+}
+
+.animate-confetti {
+  /* Ensure it is visible and processes clicks through */
+  display: block;
+  pointer-events: none;
+  animation: confetti-fall 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }

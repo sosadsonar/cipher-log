@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, Activity, Power, Search, Check, ChevronDown, Layers, Minimize2, Maximize2, Play } from 'lucide-react';
+import { Sparkles, Activity, Search, Check, ChevronDown, Layers, Maximize2, Play } from 'lucide-react';
 import SettingToggle from './SettingToggle';
 import SliderControl from './SliderControl';
 
@@ -46,7 +46,7 @@ const CuteSettings = ({ settings, updateSetting, isDark, themeStyles, setDescrip
   return (
     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
       
-      {/* 1. Boot Sequence Toggle WITH Slider (New) */}
+      {/* 1. Boot Sequence Toggle WITH Slider */}
       <SettingToggle 
         label="Intro Animation" 
         icon={<Play size={18}/>}
@@ -66,10 +66,10 @@ const CuteSettings = ({ settings, updateSetting, isDark, themeStyles, setDescrip
         />
       </SettingToggle>
 
-      {/* 2. Master FX Toggle */}
+      {/* 2. Master FX Toggle - SPARKLES ICON */}
       <SettingToggle 
         label="Ambiance Effects" 
-        icon={<Power size={18}/>}
+        icon={<Sparkles size={18}/>}
         isOn={settings.cuteEffectsOn}
         onClick={() => updateSetting('cuteEffectsOn', !settings.cuteEffectsOn)}
         onHover={() => setDescription("Toggle floating background particles.")}
@@ -182,7 +182,7 @@ const CuteSettings = ({ settings, updateSetting, isDark, themeStyles, setDescrip
             <SliderControl 
               label={`${selectedParticle.label.split(' ')[1] || 'Particle'} Size`}
               icon={<Maximize2 size={14} />}
-              value={settings.cuteDustSize || 5} // Updated Fallback to 5
+              value={settings.cuteDustSize || 5} 
               min={1} max={10} step={1}
               unit="px"
               onChange={(val) => updateSetting('cuteDustSize', val)}

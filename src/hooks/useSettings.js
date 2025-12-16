@@ -1,40 +1,57 @@
-import { useState } from 'react';
+// FIX: Added 'useEffect' to the import list
+import { useState, useEffect } from 'react';
 import { getThemeStyles } from '../themes';
-import { AVAILABLE_FONTS } from '../data';
+import { AVAILABLE_FONTS } from '../fonts';
 
 const DEFAULT_SETTINGS = {
-  // Hacker Settings
-  globalDecrypted: false,
-  animationsOn: true,
-  bootDuration: 3.5,
-  flickerOn: true,
-  flickerDuration: 7.0,
-  hoverGlitchOn: true,
-  hoverDuration: 0.5,
+  // Core
+  themeMode: 'hacker', // 'hacker', 'cute', 'normal'
   
-  // Shared Typography
-  fontFamily: 'Space Mono',
+  // Visuals (Hacker)
+  globalDecrypted: false,
+  flickerOn: true,
+  hoverGlitchOn: true,
+  animationsOn: true,
+  hoverDuration: 0.3,
+  bootDuration: 2.0,
+  flickerDuration: 7,
+
+  // Visuals (Cute)
+  cuteEffectsOn: true,
+  cuteConfettiOn: true,
+  cuteParticleType: 'petals',
+  cuteEffectSpeed: 1.0,
+  cuteParticleDensity: 20,
+  cuteDustSize: 5,
+
+  // Typography
+  fontFamily: 'System Mono', 
   customFontOn: false,
   customFontUrl: '',
   customFontFamily: '',
-  themeMode: 'hacker',
-
-  // Cute Settings
-  cuteEffectsOn: true,
-  cuteEffectSpeed: 1.0, 
-  cuteParticleType: 'petals',
-  cuteParticleDensity: 20, 
-  cuteDustSize: 5
 };
 
 export const useSettings = (isDark) => {
-  const [settings, setSettings] = useState(DEFAULT_SETTINGS);
+  // Load from localStorage or use default
+  const [settings, setSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem('blog_settings');
+      return saved ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) } : DEFAULT_SETTINGS;
+    } catch (e) {
+      return DEFAULT_SETTINGS;
+    }
+  });
+
+  // Save to localStorage whenever settings change
+  useEffect(() => {
+    localStorage.setItem('blog_settings', JSON.stringify(settings));
+  }, [settings]);
 
   const updateSetting = (key, value) => {
     setSettings(prev => {
       const newSettings = { ...prev, [key]: value };
       
-      // Auto-switch font when theme changes
+      // Auto-switch font when theme changes (optional UX improvement)
       if (key === 'themeMode') {
         if (value === 'cute') newSettings.fontFamily = 'Quicksand (Cute)';
         else if (value === 'normal') newSettings.fontFamily = 'Inter (Normal)';
@@ -48,15 +65,16 @@ export const useSettings = (isDark) => {
     setSettings(DEFAULT_SETTINGS);
   };
 
-  // Compute derived state
+  // Derived state
   const themeStyles = getThemeStyles(settings.themeMode, isDark);
   
+  // Determine Active Font Family
   const getActiveFontFamily = () => {
     if (settings.customFontOn && settings.customFontFamily) {
       return settings.customFontFamily;
     }
-    const fontData = AVAILABLE_FONTS.find(f => f.name === settings.fontFamily);
-    return fontData ? fontData.family : 'monospace';
+    const foundFont = AVAILABLE_FONTS.find(f => f.name === settings.fontFamily);
+    return foundFont ? foundFont.family : 'monospace';
   };
 
   return {

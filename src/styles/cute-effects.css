@@ -51,27 +51,36 @@
 }
 
 /* 3. Confetti Pop & Fall Animation */
-/* Updated for better visibility and physics feel */
+/* Physics Simulation: Fast Pop -> Slow Apex -> Fast Fall */
 @keyframes confetti-fall {
   0% {
     opacity: 1;
     transform: translate(0, 0) scale(0) rotate(0deg);
   }
+  
+  /* Initial Burst: Move fast to 70% of height */
   20% {
-    /* Explode Upwards */
     opacity: 1;
-    transform: translate(var(--vx), var(--vy)) scale(1.2) rotate(var(--rot));
+    transform: translate(calc(var(--vx) * 0.5), calc(var(--vy) * 0.7)) scale(1.2) rotate(var(--rot));
   }
+  
+  /* Apex / Hang Time: Slow down, reach max height */
+  45% {
+    opacity: 1;
+    transform: translate(var(--vx), var(--vy)) scale(1) rotate(calc(var(--rot) * 1.5));
+  }
+  
+  /* Gravity takes over: Fall down past start point */
   100% {
-    /* Fall Downwards (Gravity) */
     opacity: 0;
-    transform: translate(calc(var(--vx) * 1.5), 120px) scale(0.8) rotate(calc(var(--rot) * 4));
+    /* Fall way down (200px) and rotate more */
+    transform: translate(calc(var(--vx) * 1.1), 200px) scale(0.8) rotate(calc(var(--rot) * 3));
   }
 }
 
 .animate-confetti {
-  /* Ensure it is visible and processes clicks through */
   display: block;
   pointer-events: none;
-  animation: confetti-fall 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  /* Ease-out makes the start fast, the curve handles the rest */
+  animation: confetti-fall 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }

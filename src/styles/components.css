@@ -1,0 +1,9 @@
+/* Ensure the dropdown container has better contrast/borders in cute mode */
+.theme-cute .font-selector-dropdown {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px -2px rgba(244, 114, 182, 0.2); /* Pink shadow */
+  border: 2px solid #fbcfe8; /* Pink-200 */
+  /* Ensure internal scrollbar works */
+  overflow: hidden; 
+  overflow-y: auto !important; 
+}

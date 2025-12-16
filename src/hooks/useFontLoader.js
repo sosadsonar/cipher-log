@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { AVAILABLE_FONTS } from '../data';
+import { AVAILABLE_FONTS } from '../fonts';
 
 export const useFontLoader = (settings) => {
   useEffect(() => {

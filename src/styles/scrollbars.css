@@ -1,0 +1,46 @@
+/* --- SCROLLBAR CONFIGURATION --- */
+
+/* 1. Hide Scrollbar on Main Window (Keep functionality) */
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+body::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* 2. Internal Scrollbars (Default - Hacker/Normal) */
+::-webkit-scrollbar { 
+  width: 8px;
+  display: block;
+}
+::-webkit-scrollbar-track { 
+  background: #050505; 
+  border-left: 1px solid #111;
+}
+::-webkit-scrollbar-thumb { 
+  background: #22c55e;
+  border-radius: 0;
+  border: 1px solid #000;
+}
+::-webkit-scrollbar-thumb:hover { 
+  background: #4ade80;
+  box-shadow: 0 0 5px #22c55e;
+}
+
+/* 3. Scoped Cute Theme Scrollbar */
+.theme-cute ::-webkit-scrollbar {
+  width: 10px;
+}
+.theme-cute ::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+.theme-cute ::-webkit-scrollbar-thumb {
+  background-color: #f472b6;
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: content-box; 
+}
+.theme-cute ::-webkit-scrollbar-thumb:hover {
+  background-color: #fb7185;
+}

@@ -1,0 +1,19 @@
+/* --- KEYFRAMES & ANIMATIONS --- */
+
+@keyframes bounce-slight {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.text-selection-anim {
+  background-color: #22c55e;
+  color: #000000 !important;
+  box-shadow: 0 0 10px #22c55e;
+}
+
+.typewriter-cursor::after {
+  content: '|';
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink { 50% { opacity: 0; } }

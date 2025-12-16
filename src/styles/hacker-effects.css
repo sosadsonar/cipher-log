@@ -4,7 +4,7 @@
 .theme-hacker.scanline::before {
   content: " ";
   display: block;
-  position: fixed; /* UPDATED: 'fixed' ensures it stays relative to the viewport, not the document height */
+  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;

@@ -1,20 +1,14 @@
 import React from 'react';
 import { Unlock, Lock, Power, Activity, Zap } from 'lucide-react';
-import SettingToggle from './SettingToggle';
-import SliderControl from './SliderControl';
+import SettingToggle from '../Shared/SettingToggle'; // Updated Path
+import SliderControl from '../Shared/SliderControl'; // Updated Path
 
-const VisualSettings = ({ settings, updateSetting, isDark, themeStyles, setDescription }) => {
-  // If not hacker mode, show disabled message
-  if (settings.themeMode !== 'hacker') {
-    return (
-      <div className={`text-center p-8 border border-dashed opacity-50 ${themeStyles.borderSecondary} ${themeStyles.textMuted} animate-in fade-in slide-in-from-right-4 duration-300`}>
-        <p className="text-sm">Visual FX are disabled in {settings.themeMode} mode.</p>
-      </div>
-    );
-  }
+const HackerSettings = ({ settings, updateSetting, isDark, themeStyles, setDescription }) => {
+  if (settings.themeMode !== 'hacker') return null;
 
   return (
     <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+      
       <SettingToggle 
         label="Global Decryption" 
         icon={settings.globalDecrypted ? <Unlock size={18}/> : <Lock size={18}/>}
@@ -40,6 +34,7 @@ const VisualSettings = ({ settings, updateSetting, isDark, themeStyles, setDescr
           min={1.0} max={10.0} step={0.5}
           onChange={(val) => updateSetting('bootDuration', val)}
           isDark={isDark}
+          themeStyles={themeStyles}
         />
       </SettingToggle>
 
@@ -58,6 +53,7 @@ const VisualSettings = ({ settings, updateSetting, isDark, themeStyles, setDescr
           min={2.0} max={15.0} step={0.5}
           onChange={(val) => updateSetting('flickerDuration', val)}
           isDark={isDark}
+          themeStyles={themeStyles}
         />
       </SettingToggle>
 
@@ -76,10 +72,11 @@ const VisualSettings = ({ settings, updateSetting, isDark, themeStyles, setDescr
           min={0.1} max={2.0} step={0.1}
           onChange={(val) => updateSetting('hoverDuration', val)}
           isDark={isDark}
+          themeStyles={themeStyles}
         />
       </SettingToggle>
     </div>
   );
 };
 
-export default VisualSettings;
+export default HackerSettings;

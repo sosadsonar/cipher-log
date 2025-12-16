@@ -80,7 +80,8 @@ const App = () => {
         {showMobileWarning && (
           <MobileWarning 
             onClose={closeMobileWarning} 
-            isDark={isDark} 
+            isDark={isDark}
+            themeMode={settings.themeMode}
           />
         )}
 

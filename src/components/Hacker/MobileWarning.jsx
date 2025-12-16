@@ -1,7 +1,7 @@
 import React from 'react';
 import { AlertTriangle, X } from 'lucide-react';
 
-const MobileWarning = ({ onClose, isDark }) => {
+const HackerMobileWarning = ({ onClose, isDark }) => {
   return (
     <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 z-[9999] animate-in slide-in-from-bottom-10 fade-in duration-500">
       <div className={`
@@ -60,4 +60,4 @@ const MobileWarning = ({ onClose, isDark }) => {
   );
 };
 
-export default MobileWarning;
+export default HackerMobileWarning;

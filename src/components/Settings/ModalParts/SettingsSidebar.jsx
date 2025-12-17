@@ -1,10 +1,12 @@
 import React from 'react';
 import { Palette, Monitor, Type, RotateCcw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-export const CATEGORIES = [
-  { id: 'theme', label: 'Theme', icon: <Palette size={14} /> },
-  { id: 'visual', label: 'Visual FX', icon: <Monitor size={14} /> },
-  { id: 'typography', label: 'Typography', icon: <Type size={14} /> },
+// We move the definition inside or use keys for translation
+const CATEGORIES = [
+  { id: 'theme', labelKey: 'settings.nav_theme', icon: <Palette size={14} /> },
+  { id: 'visual', labelKey: 'settings.nav_visual', icon: <Monitor size={14} /> },
+  { id: 'typography', labelKey: 'settings.nav_typo', icon: <Type size={14} /> },
 ];
 
 const SettingsSidebar = ({ 
@@ -16,6 +18,8 @@ const SettingsSidebar = ({
   themeStyles, 
   isCute 
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={`
       w-full md:w-32 flex-shrink-0 flex flex-row md:flex-col 
@@ -38,7 +42,7 @@ const SettingsSidebar = ({
             style={activeCategory === cat.id ? { backgroundColor: themeStyles.accentColor, color: isDark ? '#000' : '#fff' } : {}}
           >
             {cat.icon}
-            {cat.label}
+            {t(cat.labelKey)}
           </button>
         ))}
       </div>
@@ -46,16 +50,15 @@ const SettingsSidebar = ({
       <div className={`hidden md:block p-4 border-t ${themeStyles.borderSecondary}`}>
          <button
            onClick={resetSettings}
-           onMouseEnter={() => setDescription("WARNING: Resets all system configurations to factory defaults.")}
+           onMouseEnter={() => setDescription(t('settings.hover_reset'))}
            className={`
              w-full flex flex-col items-center gap-2 text-[10px] uppercase font-bold py-3 border transition-all duration-300
              ${isDark ? 'border-red-900 text-red-500 hover:bg-red-900/30' : 'border-red-300 text-red-600 hover:bg-red-50'}
-             /* Rounded button for Cute mode */
              ${isCute ? 'rounded-xl' : 'rounded-none'}
            `}
          >
            <RotateCcw size={14} />
-           System Reset
+           {t('settings.btn_reset')}
          </button>
       </div>
     </div>

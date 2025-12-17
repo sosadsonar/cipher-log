@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'lucide-react';
-import SettingToggle from '../SettingToggle'; // Adjust path if needed (it is in ../Shared/SettingToggle.jsx)
+import SettingToggle from '../SettingToggle'; // Adjust path based on sibling structure
 import { useFontSelector } from './useFontSelector';
 import FontDropdown from './FontDropdown';
 import CustomFontInput from './CustomFontInput';
+import { useTranslation } from 'react-i18next';
 
 const FontSelector = ({ 
   selectedFontName, 
@@ -17,6 +18,8 @@ const FontSelector = ({
   themeStyles 
 }) => {
   
+  const { t } = useTranslation();
+
   // 1. Initialize Logic Hook
   const {
     isOpen, setIsOpen, search, setSearch, tempUrl, setTempUrl, 
@@ -43,7 +46,7 @@ const FontSelector = ({
         ${customFontOn ? 'opacity-50 pointer-events-none grayscale' : 'opacity-100'} 
       `}>
         <label className={`text-[10px] uppercase tracking-widest mb-2 block ${styles.textClass} opacity-70`}>
-          Primary System Font
+          {t('settings.typo_primary')}
         </label>
         
         <FontDropdown 
@@ -61,7 +64,7 @@ const FontSelector = ({
 
       {/* 4. The Custom Font Toggle & Input */}
       <SettingToggle 
-        label="Custom Override" 
+        label={t('settings.typo_custom')}
         icon={<Link size={18}/>}
         isOn={customFontOn}
         onClick={onToggleCustom}
@@ -74,6 +77,9 @@ const FontSelector = ({
           setTempUrl={setTempUrl}
           handleImport={handleImport}
           styles={styles}
+          // Pass translated labels here
+          labelUrl={t('settings.typo_url')}
+          labelHelp={t('settings.typo_help')}
         />
       </SettingToggle>
 

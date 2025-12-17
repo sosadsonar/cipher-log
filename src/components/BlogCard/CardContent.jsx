@@ -29,33 +29,27 @@ const CardContent = ({
 
     // 2. Global Decryption Enabled
     if (globalDecrypted) {
-      if (isSettingsOpen) {
-        // If settings modal is open, keep it encrypted in background
-        setDisplayedTitle(encryptText(post.title));
-        setDisplayedSummary(encryptText(post.summary));
-      } else {
-        // Decrypt transition
-        if (displayedTitle === post.title && displayedSummary === post.summary) return;
-        
-        let startTime = Date.now();
-        const duration = hoverDuration * 1000; 
-        const interval = setInterval(() => {
-          const elapsed = Date.now() - startTime;
-          if (elapsed >= duration) {
-            setDisplayedTitle(post.title);
-            setDisplayedSummary(post.summary);
-            clearInterval(interval);
-          } else {
-            setDisplayedTitle(encryptText(post.title));
-            setDisplayedSummary(encryptText(post.summary));
-          }
-        }, 50);
-        return () => clearInterval(interval);
-      }
-      return;
+      // Check if already decrypted to avoid re-running animation (e.g. when settings open/close)
+      if (displayedTitle === post.title && displayedSummary === post.summary) return;
+      
+      // Run decryption animation (e.g. when toggle is just flipped)
+      let startTime = Date.now();
+      const duration = hoverDuration * 1000; 
+      const interval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        if (elapsed >= duration) {
+          setDisplayedTitle(post.title);
+          setDisplayedSummary(post.summary);
+          clearInterval(interval);
+        } else {
+          setDisplayedTitle(encryptText(post.title));
+          setDisplayedSummary(encryptText(post.summary));
+        }
+      }, 50);
+      return () => clearInterval(interval);
     }
 
-    // 3. Hover Interaction
+    // 3. Hover Interaction (Only if NOT globally decrypted)
     if (isHovered) {
       let startTime = Date.now();
       const duration = hoverDuration * 1000;

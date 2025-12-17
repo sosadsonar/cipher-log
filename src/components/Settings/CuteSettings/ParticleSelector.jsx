@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, ChevronDown, Check } from 'lucide-react';
 import { PARTICLE_TYPES } from './constants';
+import { useTranslation } from 'react-i18next';
 
 const ParticleSelector = ({ settings, updateSetting, isDark, themeStyles, setDescription }) => {
+  const { t } = useTranslation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [search, setSearch] = useState("");
   const dropdownRef = useRef(null);
@@ -18,20 +20,28 @@ const ParticleSelector = ({ settings, updateSetting, isDark, themeStyles, setDes
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const filteredParticles = PARTICLE_TYPES.filter(p => 
-    p.label.toLowerCase().includes(search.toLowerCase())
+  // 1. Map static types to localized versions
+  const localizedParticles = PARTICLE_TYPES.map(p => ({
+    ...p,
+    translatedLabel: t(`settings.cute_p_${p.id}`)
+  }));
+
+  // 2. Filter based on the localized label
+  const filteredParticles = localizedParticles.filter(p => 
+    p.translatedLabel.toLowerCase().includes(search.toLowerCase())
   );
 
-  const selectedParticle = PARTICLE_TYPES.find(p => p.id === settings.cuteParticleType) || PARTICLE_TYPES[0];
+  // 3. Find currently selected (fallback to first)
+  const selectedParticle = localizedParticles.find(p => p.id === settings.cuteParticleType) || localizedParticles[0];
 
   return (
     <div className="relative" ref={dropdownRef}>
       <label className={`text-[10px] uppercase tracking-widest mb-2 block ${themeStyles.textPrimary} opacity-70`}>
-        Particle Style
+        {t('settings.cute_style')}
       </label>
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        onMouseEnter={() => setDescription("Choose the type of floating particles.")}
+        onMouseEnter={() => setDescription(t('settings.hover_tip'))}
         className={`
           w-full flex items-center justify-between p-3 border rounded-3xl text-sm font-bold transition-all duration-300
           ${themeStyles.borderSecondary} hover:${themeStyles.borderPrimary}
@@ -40,7 +50,7 @@ const ParticleSelector = ({ settings, updateSetting, isDark, themeStyles, setDes
       >
         <div className="flex items-center gap-3">
           <span className="text-lg">{selectedParticle.icon}</span>
-          <span>{selectedParticle.label}</span>
+          <span>{selectedParticle.translatedLabel}</span>
         </div>
         <ChevronDown size={14} className={`transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}/>
       </button>
@@ -56,7 +66,7 @@ const ParticleSelector = ({ settings, updateSetting, isDark, themeStyles, setDes
               <Search size={12} className={`absolute left-3 top-2.5 ${isDark ? 'text-pink-500' : 'text-rose-400'}`} />
               <input 
                 type="text" 
-                placeholder="Search effects..." 
+                placeholder="Search..." 
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className={`
@@ -85,7 +95,7 @@ const ParticleSelector = ({ settings, updateSetting, isDark, themeStyles, setDes
             >
               <span className="flex items-center gap-2">
                 <span className="text-base">{particle.icon}</span>
-                {particle.label}
+                {particle.translatedLabel}
               </span>
               {settings.cuteParticleType === particle.id && <Check size={12} />}
             </button>

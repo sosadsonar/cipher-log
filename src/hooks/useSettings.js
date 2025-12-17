@@ -1,13 +1,11 @@
-// FIX: Added 'useEffect' to the import list
 import { useState, useEffect } from 'react';
 import { getThemeStyles } from '../themes';
 import { AVAILABLE_FONTS } from '../fonts';
+import { useTranslation } from 'react-i18next';
 
 const DEFAULT_SETTINGS = {
-  // Core
-  themeMode: 'hacker', // 'hacker', 'cute', 'normal'
-  
-  // Visuals (Hacker)
+  themeMode: 'hacker',
+  language: 'EN', 
   globalDecrypted: false,
   flickerOn: true,
   hoverGlitchOn: true,
@@ -15,16 +13,12 @@ const DEFAULT_SETTINGS = {
   hoverDuration: 0.3,
   bootDuration: 2.0,
   flickerDuration: 7,
-
-  // Visuals (Cute)
   cuteEffectsOn: true,
   cuteConfettiOn: true,
   cuteParticleType: 'petals',
   cuteEffectSpeed: 1.0,
   cuteParticleDensity: 20,
   cuteDustSize: 5,
-
-  // Typography
   fontFamily: 'System Mono', 
   customFontOn: false,
   customFontUrl: '',
@@ -32,7 +26,10 @@ const DEFAULT_SETTINGS = {
 };
 
 export const useSettings = (isDark) => {
-  // Load from localStorage or use default
+  // 1. Call Hook at Top Level
+  const { i18n } = useTranslation();
+
+  // 2. Initialize State
   const [settings, setSettings] = useState(() => {
     try {
       const saved = localStorage.getItem('blog_settings');
@@ -42,16 +39,29 @@ export const useSettings = (isDark) => {
     }
   });
 
-  // Save to localStorage whenever settings change
+  // 3. Sync i18n with settings ON MOUNT (Effect, not inline)
+  useEffect(() => {
+    if (settings.language && i18n.language !== settings.language) {
+      i18n.changeLanguage(settings.language);
+    }
+  }, []); // Run once on mount
+
+  // 4. Save to LocalStorage on change
   useEffect(() => {
     localStorage.setItem('blog_settings', JSON.stringify(settings));
   }, [settings]);
 
+  // 5. Update Function
   const updateSetting = (key, value) => {
     setSettings(prev => {
       const newSettings = { ...prev, [key]: value };
       
-      // Auto-switch font when theme changes (optional UX improvement)
+      // Handle Language Switch
+      if (key === 'language') {
+        i18n.changeLanguage(value);
+      }
+
+      // Handle Theme Font Switch
       if (key === 'themeMode') {
         if (value === 'cute') newSettings.fontFamily = 'Quicksand (Cute)';
         else if (value === 'normal') newSettings.fontFamily = 'Inter (Normal)';
@@ -63,12 +73,11 @@ export const useSettings = (isDark) => {
 
   const resetSettings = () => {
     setSettings(DEFAULT_SETTINGS);
+    i18n.changeLanguage(DEFAULT_SETTINGS.language);
   };
 
-  // Derived state
   const themeStyles = getThemeStyles(settings.themeMode, isDark);
   
-  // Determine Active Font Family
   const getActiveFontFamily = () => {
     if (settings.customFontOn && settings.customFontFamily) {
       return settings.customFontFamily;

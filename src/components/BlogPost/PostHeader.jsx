@@ -1,13 +1,15 @@
 import React from 'react';
 import { Lock, Unlock, Heart, FileText } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const PostHeader = ({ post, themeMode, globalDecrypted, themeStyles }) => {
+  const { t } = useTranslation();
   
   // Helpers
   const getIdLabel = () => {
-    if (themeMode === 'hacker') return `SECURE_ID: ${post.id.toString().padStart(4, '0')}`;
-    if (themeMode === 'cute') return `Sparkle #${post.id}`;
-    return `ID: ${post.id}`;
+    if (themeMode === 'hacker') return `${t('card.id_hacker')}${post.id.toString().padStart(4, '0')}`;
+    if (themeMode === 'cute') return `${t('card.id_cute')}${post.id}`;
+    return `${t('card.id_normal')}${post.id}`;
   };
 
   return (
@@ -27,7 +29,7 @@ const PostHeader = ({ post, themeMode, globalDecrypted, themeStyles }) => {
         {post.title}
       </h1>
       <p className={`mt-2 text-sm uppercase tracking-widest ${themeStyles.textMuted}`}>
-        Target: Public Knowledge
+        {t('post.target')}
       </p>
     </div>
   );

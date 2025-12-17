@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 // --- LAYOUT COMPONENTS ---
 import Header from './components/Layout/Header';
@@ -8,7 +9,6 @@ import Hero from './components/Layout/Hero';
 // --- CORE COMPONENTS ---
 import BlogCard from './components/BlogCard'; 
 import BlogPost from './components/BlogPost'; 
-
 import MobileWarning from './components/MobileWarning';
 import SettingsModal from './components/Settings/SettingsModal';
 import BackgroundEffects from './components/BackgroundEffects';
@@ -31,6 +31,7 @@ const App = () => {
   const { settings, updateSetting, resetSettings, themeStyles, activeFontFamily } = useSettings(isDark);
   const { systemInfo, showMobileWarning, closeMobileWarning } = useSystemDiagnostics();
   useFontLoader(settings);
+  const { i18n } = useTranslation();
 
   // Mouse Parallax Logic
   useEffect(() => {
@@ -59,6 +60,22 @@ const App = () => {
     document.getElementsByTagName('head')[0].appendChild(link);
   }, [settings.themeMode]);
 
+  // --- DATA LOCALIZATION HELPER ---
+  const currentLang = i18n.language || 'EN'; // Fallback to EN
+
+  // Transform the static BLOG_POSTS based on selected language
+  const localizedPosts = BLOG_POSTS.map(post => {
+    // Check if content exists for current language, else fallback to EN
+    const content = post.content[currentLang] || post.content['EN'] || {};
+    
+    return {
+      ...post,
+      title: content.title || "Untitled",
+      summary: content.summary || "No summary available.",
+      content: content.body || "No content."
+    };
+  });
+
   return (
     <>
       <div 
@@ -80,7 +97,7 @@ const App = () => {
         {showMobileWarning && (
           <MobileWarning 
             onClose={closeMobileWarning} 
-            isDark={isDark}
+            isDark={isDark} 
             themeMode={settings.themeMode}
           />
         )}
@@ -102,6 +119,7 @@ const App = () => {
           settings={settings}
           setIsDark={setIsDark}
           setIsSettingsOpen={setIsSettingsOpen}
+          updateSetting={updateSetting}
         />
 
         <main className="pt-32 pb-20 px-4 md:px-8 max-w-7xl mx-auto min-h-screen">
@@ -116,7 +134,7 @@ const App = () => {
               />
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                {BLOG_POSTS.map(post => (
+                {localizedPosts.map(post => (
                   <BlogCard 
                     key={post.id} 
                     post={post} 
@@ -140,8 +158,6 @@ const App = () => {
               onBack={() => setActivePost(null)}
               isDark={isDark}
               globalDecrypted={settings.globalDecrypted}
-              animationsOn={settings.animationsOn}
-              bootDuration={settings.bootDuration}
               themeMode={settings.themeMode}
               themeStyles={themeStyles}
             />

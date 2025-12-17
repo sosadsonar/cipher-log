@@ -1,6 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const PostContent = ({ content, themeMode, themeStyles }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <div className={`prose prose-lg max-w-none font-mono ${themeStyles.textPrimary}`}>
@@ -31,7 +34,7 @@ const PostContent = ({ content, themeMode, themeStyles }) => {
 
       {/* Footer Marker */}
       <div className={`mt-12 p-4 border text-xs text-center uppercase tracking-widest opacity-50 ${themeStyles.borderSecondary} ${themeStyles.borderDashed} ${themeStyles.rounded}`}>
-        {themeMode === 'hacker' ? 'End of Payload' : 'End of Article'}
+        {themeMode === 'hacker' ? t('post.end_hacker') : t('post.end_normal')}
       </div>
     </>
   );

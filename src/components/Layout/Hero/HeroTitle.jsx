@@ -1,12 +1,14 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const HeroTitle = ({ themeMode, themeStyles, isDark }) => {
+  const { t } = useTranslation();
   
   if (themeMode === 'hacker') {
     return (
       <h2 className={`mt-8 text-4xl md:text-6xl font-black uppercase tracking-tighter max-w-4xl mx-auto glitch-hover ${themeStyles.textSecondary}`}>
-        Knowledge is <span className="line-through decoration-red-500">Power</span> <br />
-        <span className={themeStyles.textSecondary}>Control</span>
+        {t('hero.hacker_1')} <span className="line-through decoration-red-500">{t('hero.hacker_2')}</span> <br />
+        <span className={themeStyles.textSecondary}>{t('hero.hacker_3')}</span>
       </h2>
     );
   } 
@@ -14,10 +16,10 @@ const HeroTitle = ({ themeMode, themeStyles, isDark }) => {
   if (themeMode === 'cute') {
     return (
       <h2 className={`mt-8 text-4xl md:text-6xl font-black tracking-tight max-w-4xl mx-auto ${themeStyles.textSecondary}`}>
-        Curiosity is <br />
+        {t('hero.cute_1')} <br />
         <span className={`${themeStyles.textPrimary} opacity-90 flex items-center justify-center gap-3`}>
            <span className="relative inline-block opacity-70">
-             power
+             {t('hero.cute_2')}
              {/* Custom Squiggle SVG Overlay */}
              <svg 
                viewBox="0 0 100 20" 
@@ -33,7 +35,7 @@ const HeroTitle = ({ themeMode, themeStyles, isDark }) => {
                />
              </svg>
            </span>
-           cute
+           {t('hero.cute_3')}
         </span>
       </h2>
     );
@@ -42,8 +44,8 @@ const HeroTitle = ({ themeMode, themeStyles, isDark }) => {
   // Normal Mode
   return (
     <h2 className={`mt-8 text-4xl md:text-6xl font-bold tracking-tight max-w-4xl mx-auto ${themeStyles.textSecondary}`}>
-      Welcome to the Blog <br />
-      <span className={`${themeStyles.textPrimary} opacity-80`}>Read & Learn</span>
+      {t('hero.normal_1')} <br />
+      <span className={`${themeStyles.textPrimary} opacity-80`}>{t('hero.normal_2')}</span>
     </h2>
   );
 };

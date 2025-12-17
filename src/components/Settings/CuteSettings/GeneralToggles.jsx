@@ -1,46 +1,29 @@
 import React from 'react';
-import { Play, PartyPopper, Sparkles } from 'lucide-react';
-import SettingToggle from '../Shared/SettingToggle'; // Updated Path
-import SliderControl from '../Shared/SliderControl'; // Updated Path
+import { PartyPopper, Sparkles } from 'lucide-react';
+import SettingToggle from '../Shared/SettingToggle';
+import { useTranslation } from 'react-i18next';
 
 const GeneralToggles = ({ settings, updateSetting, isDark, themeStyles, setDescription }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <SettingToggle 
-        label="Intro Animation" 
-        icon={<Play size={18}/>}
-        isOn={settings.animationsOn}
-        onClick={() => updateSetting('animationsOn', !settings.animationsOn)}
-        onHover={() => setDescription("Play the cute loading sequence when opening posts.")}
-        isDark={isDark}
-        themeStyles={themeStyles}
-      >
-        <SliderControl 
-          label="Duration"
-          value={settings.bootDuration}
-          min={1.0} max={10.0} step={0.5}
-          onChange={(val) => updateSetting('bootDuration', val)}
-          isDark={isDark}
-          themeStyles={themeStyles}
-        />
-      </SettingToggle>
-
-      <SettingToggle 
-        label="Confetti Burst" 
+        label={t('settings.cute_confetti')}
         icon={<PartyPopper size={18}/>}
         isOn={settings.cuteConfettiOn}
         onClick={() => updateSetting('cuteConfettiOn', !settings.cuteConfettiOn)}
-        onHover={() => setDescription("Pop confetti when hovering over cards.")}
+        onHover={() => setDescription(t('settings.hover_tip'))}
         isDark={isDark}
         themeStyles={themeStyles}
       />
 
       <SettingToggle 
-        label="Ambiance Effects" 
+        label={t('settings.cute_ambiance')}
         icon={<Sparkles size={18}/>}
         isOn={settings.cuteEffectsOn}
         onClick={() => updateSetting('cuteEffectsOn', !settings.cuteEffectsOn)}
-        onHover={() => setDescription("Toggle floating background particles.")}
+        onHover={() => setDescription(t('settings.hover_tip'))}
         isDark={isDark}
         themeStyles={themeStyles}
       />

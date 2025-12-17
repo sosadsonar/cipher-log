@@ -1,25 +1,27 @@
 import React from 'react';
 import { Settings, Sliders, X } from 'lucide-react';
-import DaisyIcon from '../../../assets/DaisyIcon'; // Updated Path
+import DaisyIcon from '../../../assets/DaisyIcon';
+import { useTranslation } from 'react-i18next';
 
-const SettingsHeader = ({ themeMode, onClose, themeStyles, isCute }) => {
-  // Determine Header Icon & Title based on Theme
+const SettingsHeader = ({ themeMode, onClose, themeStyles }) => {
+  const { t } = useTranslation();
+
   const getHeaderDetails = () => {
     switch (themeMode) {
       case 'cute':
         return { 
           icon: <DaisyIcon size={20} />, 
-          title: 'PREFERENCES' 
+          title: t('settings.title_cute') 
         };
       case 'normal':
         return { 
           icon: <Sliders size={20} />, 
-          title: 'SETTINGS' 
+          title: t('settings.title_normal') 
         };
       default: // hacker
         return { 
           icon: <Settings className="animate-spin-slow" size={20} />, 
-          title: 'SYS_CONFIG' 
+          title: t('settings.title_hacker') 
         };
     }
   };

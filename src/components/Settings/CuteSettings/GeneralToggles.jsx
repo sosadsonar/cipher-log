@@ -13,7 +13,7 @@ const GeneralToggles = ({ settings, updateSetting, isDark, themeStyles, setDescr
         icon={<PartyPopper size={18}/>}
         isOn={settings.cuteConfettiOn}
         onClick={() => updateSetting('cuteConfettiOn', !settings.cuteConfettiOn)}
-        onHover={() => setDescription(t('settings.hover_tip'))}
+        onHover={() => setDescription(t('settings.descriptions.confetti'))} // UPDATED
         isDark={isDark}
         themeStyles={themeStyles}
       />
@@ -23,7 +23,7 @@ const GeneralToggles = ({ settings, updateSetting, isDark, themeStyles, setDescr
         icon={<Sparkles size={18}/>}
         isOn={settings.cuteEffectsOn}
         onClick={() => updateSetting('cuteEffectsOn', !settings.cuteEffectsOn)}
-        onHover={() => setDescription(t('settings.hover_tip'))}
+        onHover={() => setDescription(t('settings.descriptions.ambiance'))} // UPDATED
         isDark={isDark}
         themeStyles={themeStyles}
       />

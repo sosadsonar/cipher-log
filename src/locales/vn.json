@@ -46,6 +46,7 @@
     "read_hacker": "Thực_Thi_Đọc",
     "read_cute": "Đọc Câu Chuyện",
     "read_normal": "Đọc Bài Viết",
+    "read_article": "Đọc Bài Viết",
     "id_hacker": "KHỐI_DỮ_LIỆU_",
     "id_cute": "Ghi Chú Ngọt #",
     "id_normal": "Bài Viết #"
@@ -89,6 +90,17 @@
     "typo_primary": "Phông Chữ Chính",
     "typo_custom": "Ghi Đè Tùy Chỉnh",
     "typo_url": "URL (Google Fonts)",
-    "typo_help": "Dán URL Google Fonts và nhấn Nhập để áp dụng."
+    "typo_help": "Dán URL Google Fonts và nhấn Nhập để áp dụng.",
+    "descriptions": {
+      "theme_hacker": "Kích hoạt giao diện tiêu chuẩn với hình ảnh bảo mật cao.",
+      "theme_cute": "Chuyển sang chế độ Kawaii với màu pastel và các hạt.",
+      "theme_normal": "Bố cục blog tiêu chuẩn không có hiệu ứng đặc biệt.",
+      "global": "Giải mã tất cả các khối dữ liệu trên toàn hệ thống.",
+      "noise": "Mô phỏng kết nối không ổn định với màn hình nhấp nháy gián đoạn.",
+      "glitch": "Kiểm soát hoạt ảnh trục trặc dữ liệu (glitch) khi di chuột.",
+      "confetti": "Bắn pháo giấy khi di chuột qua các thẻ.",
+      "ambiance": "Bật/Tắt các hạt trôi nổi trong nền.",
+      "particle_style": "Chọn loại hạt trôi nổi."
+    }
   }
 }

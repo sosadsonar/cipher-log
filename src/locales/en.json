@@ -43,10 +43,11 @@
     "end_normal": "End of Article"
   },
   "card": {
-    "read_hacker": "Execute_Read",
+    "read_hacker": "> Initialize_Read_Sequence",
     "read_cute": "Read Story",
     "read_normal": "Read Article",
-    "id_hacker": "DATA_BLOCK_",
+    "read_article": "Read Article",
+    "id_hacker": "DATA_BLOCK_", 
     "id_cute": "Sweet Note #",
     "id_normal": "Post #"
   },
@@ -89,6 +90,17 @@
     "typo_primary": "Primary System Font",
     "typo_custom": "Custom Override",
     "typo_url": "URL (Google Fonts)",
-    "typo_help": "Paste a Google Fonts URL and click Import to apply."
+    "typo_help": "Paste a Google Fonts URL and click Import to apply.",
+    "descriptions": {
+      "theme_hacker": "Activates the standard interface with high security visuals.",
+      "theme_cute": "Switch to Kawaii mode with pastel colors and particles.",
+      "theme_normal": "Standard blog layout without special effects.",
+      "global": "Decrypts all data blocks globally.",
+      "noise": "Simulates unstable connection with intermittent display flickering.",
+      "glitch": "Controls the intense glitch animation when hovering over data blocks.",
+      "confetti": "Pop confetti when hovering over cards.",
+      "ambiance": "Toggle floating background particles.",
+      "particle_style": "Choose the type of floating particles."
+    }
   }
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Lock, Unlock } from 'lucide-react';
 import { encryptText } from '../../utils';
+import { useTranslation } from 'react-i18next';
 
 const CardContent = ({ 
   post, 
@@ -13,6 +14,7 @@ const CardContent = ({
   hoverGlitchOn,
   hoverDuration
 }) => {
+  const {t} = useTranslation();
   const [displayedTitle, setDisplayedTitle] = useState(post.title);
   const [displayedSummary, setDisplayedSummary] = useState(post.summary);
   // Passive delay for cute animations
@@ -79,9 +81,9 @@ const CardContent = ({
   };
 
   const getIdLabel = () => {
-    if (themeMode === 'hacker') return `DATA_BLOCK_${post.id}`;
-    if (themeMode === 'cute') return `Sweet Note #${post.id}`;
-    return `Post #${post.id}`;
+    if (themeMode === 'hacker') return `${t('card.id_hacker')}${post.id}`;
+    if (themeMode === 'cute') return `${t('card.id_cute')}${post.id}`;
+    return `${t('card.id_normal')}${post.id}`;
   };
 
   return (

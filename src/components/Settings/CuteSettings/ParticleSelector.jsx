@@ -23,15 +23,13 @@ const ParticleSelector = ({ settings, updateSetting, isDark, themeStyles, setDes
   // 1. Map static types to localized versions
   const localizedParticles = PARTICLE_TYPES.map(p => ({
     ...p,
-    translatedLabel: t(`settings.cute_p_${p.id}`)
+    translatedLabel: t(`settings.cute_p_${p.id}`) 
   }));
 
-  // 2. Filter based on the localized label
   const filteredParticles = localizedParticles.filter(p => 
     p.translatedLabel.toLowerCase().includes(search.toLowerCase())
   );
 
-  // 3. Find currently selected (fallback to first)
   const selectedParticle = localizedParticles.find(p => p.id === settings.cuteParticleType) || localizedParticles[0];
 
   return (
@@ -41,7 +39,7 @@ const ParticleSelector = ({ settings, updateSetting, isDark, themeStyles, setDes
       </label>
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        onMouseEnter={() => setDescription(t('settings.hover_tip'))}
+        onMouseEnter={() => setDescription(t('settings.descriptions.particle_style'))} // UPDATED
         className={`
           w-full flex items-center justify-between p-3 border rounded-3xl text-sm font-bold transition-all duration-300
           ${themeStyles.borderSecondary} hover:${themeStyles.borderPrimary}
@@ -55,6 +53,7 @@ const ParticleSelector = ({ settings, updateSetting, isDark, themeStyles, setDes
         <ChevronDown size={14} className={`transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}/>
       </button>
 
+      {/* ... Dropdown List (Unchanged) ... */}
       {isDropdownOpen && (
         <div className={`
           absolute top-full left-0 right-0 mt-2 z-50 border rounded-xl max-h-48 overflow-y-auto shadow-xl

@@ -14,7 +14,7 @@ const ThemeSettings = ({ settings, updateSetting, isDark, themeStyles, setDescri
       {/* Hacker Mode */}
       <button
         onClick={() => updateSetting('themeMode', 'hacker')}
-        onMouseEnter={() => setDescription(t('settings.hover_tip'))}
+        onMouseEnter={() => setDescription(t('settings.descriptions.theme_hacker'))} // UPDATED
         className={`w-full p-4 border rounded-sm flex items-center gap-4 transition-all ${settings.themeMode === 'hacker' ? (isDark ? 'bg-green-900/30 border-green-500' : 'bg-slate-200 border-slate-500') : (isDark ? 'border-green-900 hover:bg-green-900/10' : 'border-slate-300 hover:bg-slate-100')}`}
       >
         <Terminal size={24} className={isDark ? 'text-green-500' : 'text-slate-800'} />
@@ -31,7 +31,7 @@ const ThemeSettings = ({ settings, updateSetting, isDark, themeStyles, setDescri
       {/* Cute Mode */}
       <button
         onClick={() => updateSetting('themeMode', 'cute')}
-        onMouseEnter={() => setDescription(t('settings.hover_tip'))}
+        onMouseEnter={() => setDescription(t('settings.descriptions.theme_cute'))} // UPDATED
         className={`w-full p-4 border rounded-3xl flex items-center gap-4 transition-all ${settings.themeMode === 'cute' ? (isDark ? 'bg-pink-900/30 border-pink-400' : 'bg-rose-100 border-rose-400') : (isDark ? 'border-pink-900 hover:bg-pink-900/10' : 'border-rose-200 hover:bg-rose-50')}`}
       >
         <Heart size={24} className={isDark ? 'text-pink-400' : 'text-rose-500'} />
@@ -48,7 +48,7 @@ const ThemeSettings = ({ settings, updateSetting, isDark, themeStyles, setDescri
       {/* Normal Mode */}
       <button
         onClick={() => updateSetting('themeMode', 'normal')}
-        onMouseEnter={() => setDescription(t('settings.hover_tip'))}
+        onMouseEnter={() => setDescription(t('settings.descriptions.theme_normal'))} // UPDATED
         className={`w-full p-4 border rounded-lg flex items-center gap-4 transition-all ${settings.themeMode === 'normal' ? (isDark ? 'bg-gray-700 border-blue-500' : 'bg-gray-100 border-blue-600') : (isDark ? 'border-gray-700 hover:bg-gray-700/50' : 'border-gray-200 hover:bg-gray-50')}`}
       >
         <FileText size={24} className={isDark ? 'text-blue-400' : 'text-blue-600'} />

@@ -16,7 +16,7 @@ const HackerSettings = ({ settings, updateSetting, isDark, themeStyles, setDescr
         icon={settings.globalDecrypted ? <Unlock size={18}/> : <Lock size={18}/>}
         isOn={settings.globalDecrypted}
         onClick={() => updateSetting('globalDecrypted', !settings.globalDecrypted)}
-        onHover={() => setDescription(t('settings.hover_tip'))}
+        onHover={() => setDescription(t('settings.descriptions.global'))} // UPDATED
         isDark={isDark}
         themeStyles={themeStyles}
       />
@@ -26,7 +26,7 @@ const HackerSettings = ({ settings, updateSetting, isDark, themeStyles, setDescr
         icon={<Activity size={18}/>}
         isOn={settings.flickerOn}
         onClick={() => updateSetting('flickerOn', !settings.flickerOn)}
-        onHover={() => setDescription(t('settings.hover_tip'))}
+        onHover={() => setDescription(t('settings.descriptions.noise'))} // UPDATED
         isDark={isDark}
         themeStyles={themeStyles}
       >
@@ -45,7 +45,7 @@ const HackerSettings = ({ settings, updateSetting, isDark, themeStyles, setDescr
         icon={<Zap size={18}/>}
         isOn={settings.hoverGlitchOn}
         onClick={() => updateSetting('hoverGlitchOn', !settings.hoverGlitchOn)}
-        onHover={() => setDescription(t('settings.hover_tip'))}
+        onHover={() => setDescription(t('settings.descriptions.glitch'))} // UPDATED
         isDark={isDark}
         themeStyles={themeStyles}
       >
